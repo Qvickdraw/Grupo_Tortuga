@@ -1,49 +1,25 @@
 # depslib dependency file v1.0
-1780867217 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.c
-	"archivos.h"
+1780799530 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\main.c
+	"caravana.h"
 
-1780867217 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.h
+1780872418 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\caravana.h
+	<time.h>
 	<stdio.h>
-	<string.h>
-	"tipos.h"
-
-1780859686 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tipos.h
-	"../TDA/lista.h"
-
-1780718533 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.h
 	<stdlib.h>
 	<string.h>
-
-1780867248 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\main.c
-	"Juego/tipos.h"
-	"Juego/archivos.h"
-	"Juego/tablero.h"
-
-1780718397 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.c
-	"arbol.h"
-
-1780718413 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.h
-	<stdlib.h>
-	<string.h>
-
-1780718230 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\cola.c
-	"cola.h"
-
-1780718533 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\cola.h
-	<stdlib.h>
-	<string.h>
-
-1780718533 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.c
+	"vectorTDA.h"
 	"lista.h"
 
-1780867155 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.c
-	"tablero.h"
+1780799383 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\vectortda.h
 
-1780867155 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.h
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-	"tipos.h"
-	"archivos.h"
-	"../TDA/lista.h"
+1780799375 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\vectortda.c
+	"caravana.h"
+
+1780875177 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\caravana.c
+	"caravana.h"
+
+1780872298 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\lista.h
+
+1780872298 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\lista.c
+	"caravana.h"
 

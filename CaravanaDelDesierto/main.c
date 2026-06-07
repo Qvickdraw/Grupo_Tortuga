@@ -1,20 +1,23 @@
-#include "Juego/tipos.h"
-#include "Juego/archivos.h"
-#include "Juego/tablero.h"
+/*Te puse comentarios en lista.h, lo de movimientos entidad todavia no esta terminado. por ahora se genera el txt y el hecho de levantarlo esta a medias,
+ya que estabamos esperando a ponernos de acuerdo con el struct que usariamos en la lista*/
+
+
+
+
+#include "caravana.h"
+
+
+
 
 int main()
 {
-    /// TESTS
-    tConfig config;
-    leerConfig(&config);
-    mostrarConfig(&config);
+    int codError;
 
-    tLista lista;
-    tableroGenerar(&lista, &config);
-    tableroMostrar(&lista, config.cantidadPosiciones);
-    guardarCaravana(&lista, config.cantidadPosiciones);
-    tableroDestruir(&lista);
-    tableroMostrar(&lista, config.cantidadPosiciones);
+    codError=crearCaravana(CONFIG);
 
-    return 0;
+    if(codError!=TODO_OK)
+        return codError;
+
+    return TODO_OK;
+
 }
