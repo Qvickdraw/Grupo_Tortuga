@@ -31,6 +31,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Juego/archivos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Juego/archivos.h" />
+		<Unit filename="Juego/tipos.h" />
 		<Unit filename="TDA/arbol.c">
 			<Option compilerVar="CC" />
 		</Unit>
