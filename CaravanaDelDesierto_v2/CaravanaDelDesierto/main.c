@@ -12,11 +12,44 @@ ya que estabamos esperando a ponernos de acuerdo con el struct que usariamos en 
 int main()
 {
     int codError;
+    config configuracion;
+    estadoJuego estadoJuego;
 
-    codError=crearCaravana(CONFIG);
+
+    srand(time(NULL));
+
+    codError= cargarConfiguracion(CONFIG, &configuracion);
 
     if(codError!=TODO_OK)
+    {
+        return SIN_MEM;
+    }
+
+    codError=crearCaravana(configuracion);
+
+    if(codError!=TODO_OK)
+    {
+        return SIN_MEM;
+    }
+
+    inicializarEstadoJuego(&estadoJuego,&configuracion);
+
+
+    cargarCaravanaEnLista(CARAVANA,&estadoJuego);
+
+
+
+    mostrarCaravana(&estadoJuego.ruta);
+
+
+    vaciarLista(&estadoJuego.ruta);
+    if(codError!=TODO_OK)
         return codError;
+
+
+
+
+
 
     return TODO_OK;
 

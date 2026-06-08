@@ -1,22 +1,16 @@
 #include "caravana.h"
 
-int crearCaravana(const char* nombreDeArchivo)  //////////////
+int crearCaravana(config datosConfig)  //////////////
 {
-    config datosConfig;
+
     int salida, codError;
     unsigned pos;
     CasilleroGen aux;
     VectorTDA caravana;
 
-    codError= cargarConfiguracion(nombreDeArchivo,&datosConfig);
-
-    if(codError!=TODO_OK)
-    {
-        return SIN_MEM;
-    }
-
 
     codError=crearVectorInicializado(&caravana, datosConfig.cantPosiciones, sizeof(CasilleroGen));
+
     if(codError!=TODO_OK)
     {
         return SIN_MEM;
@@ -324,11 +318,11 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
     }
 
     char linea[100];
-    char elementosCrudos[20];
+    char elementosCrudos[50];
     casilleroJuego nuevoCasillero;
 
-    // Inicializamos el contador en 0 para llenar el arreglo dinámico limpiamente
-    estado->cantBandidosVivos = 0;
+
+ printf("\nsoy re hetero");
 
     while (fgets(linea, sizeof(linea), archivo) != NULL)
     {
@@ -404,6 +398,8 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
         }
     }
 
+     printf("\nsoy re gay");
+
     fclose(archivo);
     return TODO_OK;
 }
@@ -445,4 +441,87 @@ void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char dir
     }
 
     actualizarDatoLista(*punteroEntidad, &aux, sizeof(casilleroJuego));
+}
+
+
+
+void mostrarCaravana(Lista* p)
+{
+    if(!*p)
+        return;
+
+    Nodo* act = *p;
+    char bufferElementos[30];
+
+    printf("\n--- ESTADO DE LA CARAVANA ---\n");
+
+    // Reemplazamos el while por un do-while
+    do
+    {
+        casilleroJuego* casillero = (casilleroJuego*)act->info;
+
+        bufferElementos[0] = '\0';
+
+        if (casillero->inicio) strcat(bufferElementos, "I ");
+        if (casillero->salida) strcat(bufferElementos, "S ");
+        if (casillero->jugador) strcat(bufferElementos, "J ");
+        if (casillero->oasis) strcat(bufferElementos, "O ");
+        if (casillero->tormenta) strcat(bufferElementos, "T ");
+
+        for (int i = 0; i < casillero->premio; i++) strcat(bufferElementos, "P ");
+        for (int i = 0; i < casillero->vidaExtra; i++) strcat(bufferElementos, "V ");
+        for (int i = 0; i < casillero->bandido; i++) strcat(bufferElementos, "B ");
+
+        printf("%02d:", casillero->numeroPosicion);
+
+        int longitud = strlen(bufferElementos);
+
+        if (longitud == 0)
+        {
+            printf(".\n");
+        }
+        else
+        {
+            bufferElementos[longitud - 1] = '\0';
+            longitud--;
+
+            if (longitud == 1)
+            {
+                printf("%s\n", bufferElementos);
+            }
+            else
+            {
+                printf("[%s]\n", bufferElementos);
+            }
+        }
+
+        // Avanzamos al siguiente nodo
+        act = act->sig;
+
+    } while(act != *p); // Condición de corte: Si volvimos a la cabeza, dimos 1 vuelta exacta.
+
+    printf("-----------------------------\n");
+}
+int inicializarEstadoJuego(estadoJuego* estado, config *datosConfig)
+{
+
+    crearLista(&(estado->ruta));
+
+
+    estado->nodosBandidos = malloc(datosConfig->cantBandido * sizeof(Nodo*));
+    if (estado->nodosBandidos == NULL) {
+        return SIN_MEM;
+    }
+
+
+    estado->nodoJugador = NULL;
+    estado->nodoInicio = NULL;
+    estado->cantBandidosVivos = 0;
+
+    estado->vidas = datosConfig->cantVidasInicio;
+    estado->puntos = 0;
+    estado->protegidoPorOasis = 0;
+    estado->turnoPerdido = 0;
+
+    return TODO_OK;
 }

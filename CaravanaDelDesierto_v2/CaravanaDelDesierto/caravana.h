@@ -77,10 +77,11 @@ typedef struct
     int cantBandido;
 }config;
 
-int crearCaravana(const char* nombreDeArchivo);
+int crearCaravana(config datosConfig);
 int cargarConfiguracion(const char *ruta_archivo, config *ptConfig);
 int generarArchivoCaravana(VectorTDA* caravana);
 void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char direccion, int cantidad_pasos);
 int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado);
-
+void mostrarCaravana(Lista* p);
+int inicializarEstadoJuego(estadoJuego* estado, config *datosConfig);
 #endif // CARAVANA_H_INCLUDED
