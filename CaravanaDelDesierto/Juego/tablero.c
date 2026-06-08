@@ -1,6 +1,6 @@
 #include "tablero.h"
 
-int tableroGenerar(tLista *lista, const tConfig *config)
+int tableroGenerar(const tConfig *config)
 {
     srand((unsigned int)time(NULL));
     int i, pos;
@@ -101,9 +101,6 @@ int tableroGenerar(tLista *lista, const tConfig *config)
         return 0;
     }
     free(celdas);
-
-    if (!leerCaravana(lista, cantPos)) /* Leemos caravana.txt y llenamos la lista */
-        return 0;
 
     return 1;
 }

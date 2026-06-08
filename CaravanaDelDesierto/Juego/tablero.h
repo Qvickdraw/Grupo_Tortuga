@@ -9,7 +9,7 @@
 #include "../TDA/lista.h"
 
 /// TABLERO
-int tableroGenerar(tLista *lista, const tConfig *config); /* Genera la lista/tablero con sus celdas segun la config, devuelve 1 bien o 0 mal */
+int tableroGenerar(const tConfig *config); /* Genera la lista/tablero con sus celdas segun la config, devuelve 1 bien o 0 mal */
 void tableroDestruir(tLista *lista); /* Libera toda la memoria de la lista del tablero */
 void tableroMostrar(tLista *lista, int cantPosiciones); /* Muestra el tablero */
 

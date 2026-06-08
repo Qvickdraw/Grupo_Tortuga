@@ -10,7 +10,8 @@ int main()
     mostrarConfig(&config);
 
     tLista lista;
-    tableroGenerar(&lista, &config);
+    tableroGenerar(&config);
+    leerCaravana(&lista, config.cantidadPosiciones);
     tableroMostrar(&lista, config.cantidadPosiciones);
     tableroDestruir(&lista);
     tableroMostrar(&lista, config.cantidadPosiciones);
