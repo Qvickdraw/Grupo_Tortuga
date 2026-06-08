@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1780799530 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\main.c
+	"caravana.h"
+
+1780872418 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\caravana.h
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"vectorTDA.h"
+	"lista.h"
+
+1780799383 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\vectortda.h
+
+1780799375 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\vectortda.c
+	"caravana.h"
+
+1780875177 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\caravana.c
+	"caravana.h"
+
+1780872298 c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\lista.h
+
+1780872298 source:c:\users\zacar\desktop\algoritmos\parciales\parcial 1\caravanadeldesierto\lista.c
+	"caravana.h"
+
