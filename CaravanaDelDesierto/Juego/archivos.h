@@ -17,6 +17,8 @@ int leerConfig(tConfig *config); /* Lee la config, devuelve 1 bien o 0 mal */
 void mostrarConfig(const tConfig *config); /* Muestra por pantalla la config */
 
 /// CARAVANA
-int guardarCaravana(tLista *lista, int cantPosiciones); /* Genera caravana.txt, devuelve 1 bien o 0 mal */
+void celdaAString(const tCelda *celda, char *buf);
+int escribirCaravana(tCelda *celdas, int cantPosiciones);
+int leerCaravana(tLista *lista, int cantPosiciones);
 
 #endif // ARCHIVOS_H_INCLUDED

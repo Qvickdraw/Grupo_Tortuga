@@ -6,43 +6,45 @@
 /// CONSTANTES
 #define MAX_NOMBRE      50
 #define MAX_HISTORIAL   500
-
-/// TIPO DE CELDA
-typedef enum
-{
-    CELDA_VACIA = '.',
-    CELDA_INICIO = 'I',
-    CELDA_SALIDA = 'S',
-    CELDA_PREMIO = 'P',
-    CELDA_VIDA = 'V',
-    CELDA_OASIS = 'O',
-    CELDA_TORMENTA = 'T'
-}tTipoCelda;
+#define CHAR_INICIO    'I'
+#define CHAR_SALIDA    'S'
+#define CHAR_PREMIO    'P'
+#define CHAR_VIDA      'V'
+#define CHAR_OASIS     'O'
+#define CHAR_TORMENTA  'T'
+#define CHAR_BANDIDO   'B'
+#define CHAR_JUGADOR   'J'
+#define CHAR_VACIA     '.'
 
 /// CELDA DEL TABLERO
 typedef struct
 {
-    int        numero;
-    tTipoCelda tipo; /* que hay en la celda */
-    int        tieneBandido; /* 1 si hay un bandido en la celda */
-    int        tieneJugador; /* 1 si el jugador esta aqui       */
+    int numero; /* numero de posicion: 1..N */
+    int estaInicio; /* 1 si es el campamento inicial */
+    int estaSalida; /* 1 si es la ciudad refugio */
+    int tienePremio; /* 1 si hay un premio */
+    int tieneVida; /* 1 si hay vida extra */
+    int tieneOasis; /* 1 si hay oasis */
+    int tieneTormenta; /* 1 si hay tormenta */
+    int cantBandidos; /* cantidad de bandidos en esta celda */
+    int tieneJugador; /* 1 si el jugador esta aqui */
 }tCelda;
 
 /// JUGADOR (estado durante la partida)
 typedef struct
 {
-    int vidas;
-    int puntos;
-    int protegido;
-    int pierdeTurno;
-    tNodoLista *posicion;
+    int vidas; /* hp */
+    int puntos; /* puntos acumulados */
+    int protegido; /* 1 protc oasis */
+    int pierdeTurno; /* 1 pierde prox turno */
+    tNodoLista *posicion; /* pos actual */
 }tJugador;
 
 /// BANDIDO
 typedef struct
 {
     int id;
-    tNodoLista *posicion;
+    tNodoLista *posicion; /* pos actual */
 }tBandido;
 
 /// MOVIMIENTO

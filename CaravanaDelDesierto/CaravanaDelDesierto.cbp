@@ -31,21 +31,32 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="caravana.c">
+		<Unit filename="Juego/archivos.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="caravana.h" />
-		<Unit filename="lista.c">
+		<Unit filename="Juego/archivos.h" />
+		<Unit filename="Juego/tablero.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="lista.h" />
+		<Unit filename="Juego/tablero.h" />
+		<Unit filename="Juego/tipos.h" />
+		<Unit filename="TDA/arbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TDA/arbol.h" />
+		<Unit filename="TDA/cola.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TDA/cola.h" />
+		<Unit filename="TDA/lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TDA/lista.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="vectorTDA.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="vectorTDA.h" />
-		<Extensions />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

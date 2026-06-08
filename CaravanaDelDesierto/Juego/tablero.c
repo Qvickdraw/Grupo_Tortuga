@@ -1,138 +1,109 @@
 #include "tablero.h"
 
-int posicionUsada(int *usadas, int cantidad, int pos)
-{
-    int i;
-
-    for (i = 0; i < cantidad; i++)
-    {
-        if (usadas[i] == pos)
-            return 1;
-    }
-
-    return 0;
-}
-
-int posicionAleatoria(int *usadas, int cantidad, int cantPos)
-{
-    int pos;
-
-    do
-    {
-        pos = 1 + rand() % (cantPos - 2); /* entre 1 y cantPos-2 asi aseguramos que no sea la posicion del inicio (0) ni la salida (cantPos-1) */
-    }while (posicionUsada(usadas, cantidad, pos));
-
-    return pos;
-}
-
 int tableroGenerar(tLista *lista, const tConfig *config)
 {
     srand((unsigned int)time(NULL));
-    int i, pos, cantUsadas = 0;
+    int i, pos;
     int cantPos = config->cantidadPosiciones;
 
-    /* Total de elementos que ocupan celdas/pos */
-    int totalEspeciales = config->maximoBandidos + config->maximoPremios
-                          + config->maximoVidasExtra + config->maximoOasis
-                          + config->maximoTormentas;
-
-    if (totalEspeciales + 3 > cantPos) /* 3 = 1 inicio + 1 salida + 1 espacio para moverse */
+    if (cantPos < 3) /* Verificamos min de pos, 1 para ini 1 para salida y otra para moverse */
     {
-        printf("Error: no hay suficientes posiciones para todos los elementos.\n");
+        printf("Error: se necesitan al menos 3 posiciones.\n");
         return 0;
     }
 
-    int *usadas = malloc(cantPos * sizeof(int)); /* Guardo las pos que ya fueron usadas */
-    tCelda *celdas = malloc(cantPos * sizeof(tCelda)); /* temp para el tablero antes de insertar */
-
-    if (!usadas || !celdas)
+    tCelda *celdas = malloc(cantPos * sizeof(tCelda));
+    if (!celdas)
     {
-        free(usadas);
-        free(celdas);
-        printf("Error: memoria insuficiente para generar el tablero.\n");
+        printf("Error: memoria insuficiente.\n");
         return 0;
     }
 
-    /* Inicio las celdas como vacias */
+    /* Inicializamos las celdas */
     for (i = 0; i < cantPos; i++)
     {
         celdas[i].numero = i + 1;
-        celdas[i].tipo = CELDA_VACIA;
-        celdas[i].tieneBandido = 0;
+        celdas[i].estaInicio = 0;
+        celdas[i].estaSalida = 0;
+        celdas[i].tienePremio = 0;
+        celdas[i].tieneVida = 0;
+        celdas[i].tieneOasis = 0;
+        celdas[i].tieneTormenta = 0;
+        celdas[i].cantBandidos = 0;
         celdas[i].tieneJugador = 0;
     }
 
-    /* Pos 0 = inicio, pos cantPos-1 = salida */
-    celdas[0].tipo = CELDA_INICIO;
-    celdas[0].tieneJugador = 1; /* Jugador arranca en el incio */
-    celdas[cantPos - 1].tipo = CELDA_SALIDA;
+    /* Inicio y salida */
+    celdas[0].estaInicio = 1;
+    celdas[0].tieneJugador = 1;
+    celdas[cantPos - 1].estaSalida = 1;
 
-    usadas[cantUsadas++] = 0; /* Reservo la celda inicio */
-    usadas[cantUsadas++] = cantPos - 1; /* Reservo la celda salida */
-
-    /* Premios */
+    /* Premios  */
     for (i = 0; i < config->maximoPremios; i++)
     {
-        pos = posicionAleatoria(usadas, cantUsadas, cantPos);
-        celdas[pos].tipo = CELDA_PREMIO;
-        usadas[cantUsadas++] = pos;
+        do
+        {
+            pos = 1 + rand() % (cantPos - 2);
+        }while(celdas[pos].tienePremio);
+
+        celdas[pos].tienePremio = 1;
     }
 
-    /* Vidas Extras */
+    /* Vidas extra */
     for (i = 0; i < config->maximoVidasExtra; i++)
     {
-        pos = posicionAleatoria(usadas, cantUsadas, cantPos);
-        celdas[pos].tipo = CELDA_VIDA;
-        usadas[cantUsadas++] = pos;
+        do
+        {
+            pos = 1 + rand() % (cantPos - 2);
+        }while(celdas[pos].tieneVida);
+        celdas[pos].tieneVida = 1;
     }
 
     /* Oasis */
     for (i = 0; i < config->maximoOasis; i++)
     {
-        pos = posicionAleatoria(usadas, cantUsadas, cantPos);
-        celdas[pos].tipo = CELDA_OASIS;
-        usadas[cantUsadas++] = pos;
+        int pos;
+        do
+        {
+            pos = 1 + rand() % (cantPos - 2);
+        }while(celdas[pos].tieneOasis);
+
+        celdas[pos].tieneOasis = 1;
     }
 
-    /* Tormentas, no puede estar en la primera pos */
+    /* Tormentas */
     for (i = 0; i < config->maximoTormentas; i++)
     {
+        int pos;
         do
         {
-            pos = posicionAleatoria(usadas, cantUsadas, cantPos);
-        }while (pos <= 1);
+            pos = 1 + rand() % (cantPos - 2);
+        }while(celdas[pos].tieneTormenta || pos <= 1);
 
-        celdas[pos].tipo = CELDA_TORMENTA;
-        usadas[cantUsadas++] = pos;
+        celdas[pos].tieneTormenta = 1;
     }
 
-    /* Bandidos, no pueden estar en las 3 primeras pos */
+    /* Bandidos */
     for (i = 0; i < config->maximoBandidos; i++)
     {
+        int pos;
         do
         {
-            pos = posicionAleatoria(usadas, cantUsadas, cantPos);
-        }while (pos <= 2);
+            pos = 1 + rand() % (cantPos - 2); /* Me aseguro que no este en el inicio ni al final */
+        }while(celdas[pos].cantBandidos > 0 || pos <= 2);
 
-        celdas[pos].tieneBandido = 1;
-        usadas[cantUsadas++] = pos;
+        celdas[pos].cantBandidos = 1;
     }
 
-    /* Insertamos en la lista */
-    listaCrear(lista);
-    for (i = 0; i < cantPos; i++)
+    if (!escribirCaravana(celdas, cantPos)) /* Generamos el caravana.txt */
     {
-        if (!listaPoner(lista, &celdas[i], sizeof(tCelda)))
-        {
-            free(usadas);
-            free(celdas);
-            printf("Error: no se pudo insertar celda en la lista.\n");
-            return 0;
-        }
+        free(celdas);
+        return 0;
     }
-
-    free(usadas);
     free(celdas);
+
+    if (!leerCaravana(lista, cantPos)) /* Leemos caravana.txt y llenamos la lista */
+        return 0;
 
     return 1;
 }
@@ -146,40 +117,54 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
 {
     if (!*lista)
     {
-        printf("\nTablero Vacio.\n");
+        printf("\nTablero vacio.\n");
         return;
     }
 
-    tNodoLista *inicio = (*lista)->sig;
-    tNodoLista *actual = inicio;
-    int i;
+    tNodoLista *actual = (*lista)->sig;
+    int i, j;
 
     printf("\n=== CARAVANA DEL DESIERTO ===\n");
 
     for (i = 0; i < cantPosiciones; i++)
     {
-        tCelda *celda = (tCelda *)actual->info;
+        tCelda *c = (tCelda *)actual->info;
 
-        printf("%02d: ", celda->numero);
+        /* Contamos cuantos elementos hay */
+        int cant = c->estaInicio + c->estaSalida + c->tienePremio
+                 + c->tieneVida + c->tieneOasis + c->tieneTormenta
+                 + c->cantBandidos + c->tieneJugador;
 
-        if (celda->tieneJugador)
+        printf("%02d:", c->numero);
+
+        if (cant == 0)
         {
-            if (celda->tipo == CELDA_VACIA || celda->tipo == CELDA_INICIO)
-                printf("[J]");
-            else
-                printf("[%c J]", (char)celda->tipo);
+            printf(".");
         }
-        else if (celda->tieneBandido && celda->tipo != CELDA_VACIA)
+        else if (cant == 1 && !c->tieneJugador)
         {
-            printf("[%c B]", (char)celda->tipo);
-        }
-        else if (celda->tieneBandido)
-        {
-            printf("B");
+            if (c->estaInicio) printf("I");
+            if (c->estaSalida) printf("S");
+            if (c->tienePremio) printf("P");
+            if (c->tieneVida) printf("V");
+            if (c->tieneOasis) printf("O");
+            if (c->tieneTormenta) printf("T");
+            if (c->cantBandidos == 1) printf("B");
         }
         else
         {
-            printf("%c", (char)celda->tipo);
+            printf("[");
+            if (c->estaInicio) printf("I ");
+            if (c->estaSalida) printf("S ");
+            if (c->tienePremio) printf("P ");
+            if (c->tieneVida) printf("V ");
+            if (c->tieneOasis) printf("O ");
+            if (c->tieneTormenta) printf("T ");
+
+            for (j = 0; j < c->cantBandidos; j++) printf("B ");
+
+            if (c->tieneJugador) printf("J ");
+            printf("\b]");  /* borramos el ultimo espacio y cerramos */
         }
 
         printf("\n");

@@ -13,7 +13,4 @@ int tableroGenerar(tLista *lista, const tConfig *config); /* Genera la lista/tab
 void tableroDestruir(tLista *lista); /* Libera toda la memoria de la lista del tablero */
 void tableroMostrar(tLista *lista, int cantPosiciones); /* Muestra el tablero */
 
-int posicionUsada(int *usadas, int cantidad, int pos); /* Devuelve 1 si la posicion pos ya fue usada en el arreglo */
-int posicionAleatoria(int *usadas, int cantidad, int cantPos); /* Genera una posicion aleatoria que no este usada */
-
 #endif // TABLERO_H_INCLUDED
