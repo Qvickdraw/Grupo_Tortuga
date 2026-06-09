@@ -8,6 +8,7 @@
 #define ERR_ARCH -2
 #define ERR_VEC -3
 #define ERR_POS -4
+#define SIN_ELEM -5
 #define CONFIG "config.txt"
 #define CARAVANA "caravana.txt"
 
@@ -18,6 +19,7 @@
 #include <string.h>
 #include "vectorTDA.h"
 #include "lista.h"
+#include "cola.h"
 
 
 
@@ -48,6 +50,7 @@ typedef struct {
     int puntos;
     int protegidoPorOasis;
     int turnoPerdido;
+    int victoria;
 } estadoJuego;
 
 /// este seria el struct que deciamos de lista, la idea era q sea robusta para q no haya problemas, simplemente al final del estado
@@ -77,6 +80,15 @@ typedef struct
     int cantBandido;
 }config;
 
+///struct de movimiento
+
+typedef struct
+{
+    char entidad;
+    char direccion;
+    unsigned cantidad;
+}movimiento;
+
 int crearCaravana(config datosConfig);
 int cargarConfiguracion(const char *ruta_archivo, config *ptConfig);
 int generarArchivoCaravana(VectorTDA* caravana);
@@ -84,4 +96,10 @@ void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char dir
 int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado);
 void mostrarCaravana(Lista* p);
 int inicializarEstadoJuego(estadoJuego* estado, config *datosConfig);
+char calcularCaminoMasCorto(Nodo* nodoBandido, Nodo* nodoJugador);
+int generarMovimientos(estadoJuego* estado, cola* colaTurno);
+int ejecutarMovimientosLista(estadoJuego* estado, cola* colaTurno);
+void eliminarBandidoDelArreglo(estadoJuego* estado, int indiceBandido);
+int determinarNuevoEstado(estadoJuego* estado);
+
 #endif // CARAVANA_H_INCLUDED

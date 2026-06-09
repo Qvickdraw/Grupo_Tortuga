@@ -98,7 +98,7 @@ int crearCaravana(config datosConfig)  //////////////
         if(pos != 0 && pos != salida)
         {
             obtenerDeVector(&caravana, &aux, pos);
-            if(aux.tormenta!=1 && aux.tormenta!=1)
+            if(aux.tormenta!=1 && aux.oasis!=1)
             {
                 aux.tormenta=1;
                 actualizarEnVector(&caravana, &aux, pos);
@@ -326,7 +326,7 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
         char *salto_n = strchr(linea, '\n');
         if (salto_n != NULL)
         {
-            *salto_n = '\0'; // Desreferenciamos el puntero y clavamos el fin de cadena
+            *salto_n = '\0';
         }
         char *salto_r = strchr(linea, '\r');
         if (salto_r != NULL)
@@ -369,14 +369,10 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
                 }
             }
 
-            // 1. Insertamos el casillero en la lista circular del estado
             ponerAlFinal(&(estado->ruta), &nuevoCasillero, sizeof(casilleroJuego));
 
-            // 2. Capturamos la dirección en memoria del nodo recién creado.
-            // Al ser circular, el nodo que acabás de insertar al final siempre es el 'ant' del primero.
             Nodo* nodoRecienInsertado = estado->ruta->ant;
 
-            // 3. Asignamos los punteros de control global
             if (nuevoCasillero.inicio)
             {
                 estado->nodoInicio = nodoRecienInsertado;
@@ -386,7 +382,6 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
                 estado->nodoJugador = nodoRecienInsertado;
             }
 
-            // 4. Si hay bandidos, guardamos el puntero en el arreglo dinámico
             for (int b = 0; b < nuevoCasillero.bandido; b++)
             {
                 estado->nodosBandidos[estado->cantBandidosVivos] = nodoRecienInsertado;
@@ -405,8 +400,6 @@ void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char dir
 {
     casilleroJuego aux;
 
-
-
     obtenerDatoLista(*punteroEntidad, &aux, sizeof(casilleroJuego));
 
     if (tipoEntidad == 'J')
@@ -420,10 +413,7 @@ void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char dir
 
     actualizarDatoLista(*punteroEntidad, &aux, sizeof(casilleroJuego));
 
-
     avanzarEnLista(ruta, punteroEntidad, direccion, cantidad_pasos);
-
-
 
     obtenerDatoLista(*punteroEntidad, &aux, sizeof(casilleroJuego));
 
@@ -439,8 +429,213 @@ void moverEntidad(Lista* ruta, Nodo** punteroEntidad, char tipoEntidad, char dir
     actualizarDatoLista(*punteroEntidad, &aux, sizeof(casilleroJuego));
 }
 
+int generarMovimientos(estadoJuego* estado, cola* colaTurno)
+{
+
+    movimiento movActual;
 
 
+    if (estado->turnoPerdido == 0)
+    {
+        movActual.entidad = 'J';
+
+        movActual.cantidad = (rand() % 6) + 1;
+
+        movActual.direccion = 'F';
+
+        ponerEnCola(colaTurno, &movActual, sizeof(movimiento));
+    }
+    else
+    {
+
+        estado->turnoPerdido = 0;
+    }
+
+    for (int i = 0; i < estado->cantBandidosVivos; i++)
+    {
+        movActual.entidad = 'B';
+
+        movActual.cantidad = (rand() % 3) + 1;
+
+        Nodo* bandidoActual = *(estado->nodosBandidos+i);
+        movActual.direccion = calcularCaminoMasCorto(bandidoActual, estado->nodoJugador);
+
+        ponerEnCola(colaTurno, &movActual, sizeof(movimiento));
+    }
+
+    return TODO_OK;
+}
+char calcularCaminoMasCorto(Nodo* nodoBandido, Nodo* nodoJugador)
+{
+
+    if (nodoBandido == nodoJugador) return 'F';
+
+    Nodo* exploradorF = nodoBandido;
+    Nodo* exploradorB = nodoBandido;
+
+    while (exploradorF != nodoJugador && exploradorB != nodoJugador)
+    {
+        exploradorF = exploradorF->sig;
+        if (exploradorF == nodoJugador) return 'F';
+
+        exploradorB = exploradorB->ant;
+        if (exploradorB == nodoJugador) return 'B';
+    }
+
+    return 'F';
+}
+int ejecutarMovimientosLista(estadoJuego* estado, cola* colaTurno)
+{
+    movimiento movActual;
+    int indiceBandido = 0;
+    casilleroJuego casAux;
+
+    while(sacarDeCola(colaTurno, &movActual, sizeof(movimiento)) == TODO_OK)
+    {
+
+        if(movActual.entidad == 'J')
+        {
+
+            obtenerDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+            casAux.jugador = 0;
+            actualizarDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+
+            char dirActual = movActual.direccion;
+
+            for(int p = 0; p < movActual.cantidad; p++)
+            {
+                avanzarEnLista(&(estado->ruta), &(estado->nodoJugador), dirActual, 1);
+
+                obtenerDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+                if(casAux.salida == 1 && p < (movActual.cantidad - 1))
+                {
+                    dirActual = (dirActual == 'F') ? 'B' : 'F';
+                }
+            }
+
+            obtenerDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+            casAux.jugador = 1;
+            actualizarDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+        }
+        else if(movActual.entidad == 'B')
+        {
+
+            if (indiceBandido < estado->cantBandidosVivos)
+            {
+                Nodo* nodoB = *(estado->nodosBandidos + indiceBandido);
+
+                obtenerDatoLista(nodoB, &casAux, sizeof(casilleroJuego));
+                casAux.bandido--;
+                actualizarDatoLista(nodoB, &casAux, sizeof(casilleroJuego));
+
+                avanzarEnLista(&(estado->ruta), &nodoB, movActual.direccion, movActual.cantidad);
+
+                obtenerDatoLista(nodoB, &casAux, sizeof(casilleroJuego));
+                casAux.bandido++;
+                actualizarDatoLista(nodoB, &casAux, sizeof(casilleroJuego));
+
+                *(estado->nodosBandidos + indiceBandido) = nodoB;
+            }
+
+            indiceBandido++;
+        }
+    }
+
+    return TODO_OK;
+}
+void eliminarBandidoDelArreglo(estadoJuego* estado, int indiceBandido)
+{
+    for(int i = indiceBandido; i < estado->cantBandidosVivos - 1; i++)
+    {
+        estado->nodosBandidos[i] = estado->nodosBandidos[i + 1];
+    }
+    estado->cantBandidosVivos--;
+}
+int determinarNuevoEstado(estadoJuego* estado)
+{
+    casilleroJuego casAux;
+    obtenerDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+
+    if(casAux.salida == 1)
+    {
+
+        estado->victoria = 1;
+
+        return TODO_OK;
+    }
+
+    if(casAux.bandido > 0)
+    {
+        if(estado->protegidoPorOasis == 0)
+        {
+            estado->vidas--;
+            casAux.bandido--;
+            casAux.jugador = 0;
+            actualizarDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+
+            int i = 0;
+            int bandidoEncontrado = 0;
+
+            while(i < estado->cantBandidosVivos && bandidoEncontrado == 0)
+            {
+                if(*(estado->nodosBandidos + i) == estado->nodoJugador)
+                {
+                    eliminarBandidoDelArreglo(estado, i);
+                    bandidoEncontrado = 1;
+                }
+                i++;
+            }
+
+            if(estado->vidas <= 0)
+            {
+                estado->victoria = 2;
+            }
+            else
+            {
+
+                estado->nodoJugador = estado->nodoInicio;
+                obtenerDatoLista(estado->nodoInicio, &casAux, sizeof(casilleroJuego));
+                casAux.jugador = 1;
+                actualizarDatoLista(estado->nodoInicio, &casAux, sizeof(casilleroJuego));
+            }
+
+            return TODO_OK;
+        }
+    }
+
+    if(casAux.premio > 0)
+    {
+        estado->puntos++;
+        casAux.premio = 0;
+    }
+
+    if(casAux.vidaExtra > 0)
+    {
+        estado->vidas++;
+        casAux.vidaExtra = 0;
+    }
+
+    if(casAux.tormenta == 1)
+    {
+        if(estado->protegidoPorOasis == 0)
+        {
+            estado->turnoPerdido = 1;
+        }
+    }
+
+    if(casAux.oasis == 1)
+    {
+        estado->protegidoPorOasis = 1;
+    }
+    else
+    {
+        estado->protegidoPorOasis = 0;
+    }
+
+    actualizarDatoLista(estado->nodoJugador, &casAux, sizeof(casilleroJuego));
+
+    return TODO_OK;
+}
 void mostrarCaravana(Lista* p)
 {
     if(!*p)
@@ -451,7 +646,7 @@ void mostrarCaravana(Lista* p)
 
     printf("\n--- ESTADO DE LA CARAVANA ---\n");
 
-    // Reemplazamos el while por un do-while
+
     do
     {
         casilleroJuego* casillero = (casilleroJuego*)act->info;
@@ -491,10 +686,11 @@ void mostrarCaravana(Lista* p)
             }
         }
 
-        // Avanzamos al siguiente nodo
+
         act = act->sig;
 
-    } while(act != *p); // Condición de corte: Si volvimos a la cabeza, dimos 1 vuelta exacta.
+    }
+    while(act != *p);
 
     printf("-----------------------------\n");
 }
@@ -505,7 +701,8 @@ int inicializarEstadoJuego(estadoJuego* estado, config *datosConfig)
 
 
     estado->nodosBandidos = malloc(datosConfig->cantBandido * sizeof(Nodo*));
-    if (estado->nodosBandidos == NULL) {
+    if (estado->nodosBandidos == NULL)
+    {
         return SIN_MEM;
     }
 
@@ -518,6 +715,7 @@ int inicializarEstadoJuego(estadoJuego* estado, config *datosConfig)
     estado->puntos = 0;
     estado->protegidoPorOasis = 0;
     estado->turnoPerdido = 0;
+    estado->victoria = 0;
 
     return TODO_OK;
 }
