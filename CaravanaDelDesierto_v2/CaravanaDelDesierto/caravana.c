@@ -321,9 +321,6 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
     char elementosCrudos[50];
     casilleroJuego nuevoCasillero;
 
-
- printf("\nsoy re hetero");
-
     while (fgets(linea, sizeof(linea), archivo) != NULL)
     {
         char *salto_n = strchr(linea, '\n');
@@ -375,8 +372,8 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
             // 1. Insertamos el casillero en la lista circular del estado
             ponerAlFinal(&(estado->ruta), &nuevoCasillero, sizeof(casilleroJuego));
 
-            // 2. Capturamos la direcciÛn en memoria del nodo reciÈn creado.
-            // Al ser circular, el nodo que acab·s de insertar al final siempre es el 'ant' del primero.
+            // 2. Capturamos la direcci√≥n en memoria del nodo reci√©n creado.
+            // Al ser circular, el nodo que acab√°s de insertar al final siempre es el 'ant' del primero.
             Nodo* nodoRecienInsertado = estado->ruta->ant;
 
             // 3. Asignamos los punteros de control global
@@ -389,7 +386,7 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
                 estado->nodoJugador = nodoRecienInsertado;
             }
 
-            // 4. Si hay bandidos, guardamos el puntero en el arreglo din·mico
+            // 4. Si hay bandidos, guardamos el puntero en el arreglo din√°mico
             for (int b = 0; b < nuevoCasillero.bandido; b++)
             {
                 estado->nodosBandidos[estado->cantBandidosVivos] = nodoRecienInsertado;
@@ -398,7 +395,6 @@ int cargarCaravanaEnLista(const char *ruta_archivo, estadoJuego *estado)
         }
     }
 
-     printf("\nsoy re gay");
 
     fclose(archivo);
     return TODO_OK;
@@ -498,7 +494,7 @@ void mostrarCaravana(Lista* p)
         // Avanzamos al siguiente nodo
         act = act->sig;
 
-    } while(act != *p); // CondiciÛn de corte: Si volvimos a la cabeza, dimos 1 vuelta exacta.
+    } while(act != *p); // Condici√≥n de corte: Si volvimos a la cabeza, dimos 1 vuelta exacta.
 
     printf("-----------------------------\n");
 }
