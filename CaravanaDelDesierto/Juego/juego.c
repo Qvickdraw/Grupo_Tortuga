@@ -332,6 +332,7 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
 
     printf("=== CARAVANA DEL DESIERTO ===\n");
     printf("Jugador: %s | Vidas: %d | Puntos: %d\n", nombreJugador, estado.vidas, estado.puntos);
+    esperarEnter();
 
     /* Turno */
     while (partidaActiva)

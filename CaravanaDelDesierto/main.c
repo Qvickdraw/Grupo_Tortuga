@@ -8,7 +8,8 @@ int main()
     /// TESTS
     tConfig config;
     leerConfig(&config);
-//    mostrarConfig(&config);
+    mostrarConfig(&config);
+    esperarEnter();
 
 //    tLista lista;
 //    tableroGenerar(&config);

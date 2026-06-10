@@ -14,7 +14,7 @@
 	<stdlib.h>
 	<string.h>
 
-1781061204 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\main.c
+1781065110 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\main.c
 	"Juego/tipos.h"
 	"Juego/archivos.h"
 	"Juego/tablero.h"
@@ -48,7 +48,7 @@
 	"archivos.h"
 	"../TDA/lista.h"
 
-1781064337 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.c
+1781065110 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.c
 	"juego.h"
 
 1781037113 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\ranking.c
