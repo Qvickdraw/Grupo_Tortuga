@@ -97,7 +97,7 @@ int escribirCaravana(tCelda *celdas, int cantPosiciones)
     for (i = 0; i < cantPosiciones; i++)
     {
         celdaAString(&celdas[i], buf);
-        fprintf(pf, "%02d:%s\n", celdas[i].numero, buf);
+        fprintf(pf, "%02d: %s\n", celdas[i].numero, buf);
     }
 
     fclose(pf);
@@ -167,5 +167,19 @@ int leerCaravana(tLista *lista, int cantPosiciones)
     }
 
     fclose(f);
+    return 1;
+}
+
+int guardarPartida(const tPartida *partida)
+{
+    FILE *pf = fopen(ARCHIVO_PARTIDAS, "ab");
+    if (!pf)
+    {
+        printf("Error: no se pudo abrir %s\n", ARCHIVO_PARTIDAS);
+        return 0;
+    }
+
+    fwrite(partida, sizeof(tPartida), 1, pf);
+    fclose(pf);
     return 1;
 }

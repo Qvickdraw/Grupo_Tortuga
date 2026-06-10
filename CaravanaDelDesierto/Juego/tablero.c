@@ -62,7 +62,6 @@ int tableroGenerar(const tConfig *config)
     /* Oasis */
     for (i = 0; i < config->maximoOasis; i++)
     {
-        int pos;
         do
         {
             pos = 1 + rand() % (cantPos - 2);
@@ -74,7 +73,6 @@ int tableroGenerar(const tConfig *config)
     /* Tormentas */
     for (i = 0; i < config->maximoTormentas; i++)
     {
-        int pos;
         do
         {
             pos = 1 + rand() % (cantPos - 2);
@@ -86,13 +84,12 @@ int tableroGenerar(const tConfig *config)
     /* Bandidos */
     for (i = 0; i < config->maximoBandidos; i++)
     {
-        int pos;
         do
         {
             pos = 1 + rand() % (cantPos - 2); /* Me aseguro que no este en el inicio ni al final */
-        }while(celdas[pos].cantBandidos > 0 || pos <= 2);
+        }while(celdas[pos].cantBandidos > 0 && pos <= 2);
 
-        celdas[pos].cantBandidos = 1;
+        celdas[pos].cantBandidos++;
     }
 
     if (!escribirCaravana(celdas, cantPos)) /* Generamos el caravana.txt */
@@ -121,7 +118,7 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
     tNodoLista *actual = (*lista)->sig;
     int i, j;
 
-    printf("\n=== CARAVANA DEL DESIERTO ===\n");
+    printf("=== CARAVANA DEL DESIERTO ===\n");
 
     for (i = 0; i < cantPosiciones; i++)
     {
@@ -132,7 +129,7 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
                  + c->tieneVida + c->tieneOasis + c->tieneTormenta
                  + c->cantBandidos + c->tieneJugador;
 
-        printf("%02d:", c->numero);
+        printf("%02d: ", c->numero);
 
         if (cant == 0)
         {
@@ -169,4 +166,23 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
     }
 
     printf("=============================\n");
+}
+
+tNodoLista *tableroBuscarSalida(tLista *lista, int cantPosiciones)
+{
+    if (!*lista)
+        return NULL;
+
+    tNodoLista *actual = (*lista)->sig;
+    int i;
+
+    for (i = 0; i < cantPosiciones; i++)
+    {
+        tCelda *celda = (tCelda *)actual->info;
+        if (celda->estaSalida)
+            return actual;
+        actual = actual->sig;
+    }
+
+    return NULL;
 }

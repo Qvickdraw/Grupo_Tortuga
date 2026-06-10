@@ -30,22 +30,20 @@ typedef struct
     int tieneJugador; /* 1 si el jugador esta aqui */
 }tCelda;
 
-/// JUGADOR (estado durante la partida)
+/// ESTADO DE JUEGO
 typedef struct
 {
-    int vidas; /* hp */
-    int puntos; /* puntos acumulados */
-    int protegido; /* 1 protc oasis */
-    int pierdeTurno; /* 1 pierde prox turno */
-    tNodoLista *posicion; /* pos actual */
-}tJugador;
-
-/// BANDIDO
-typedef struct
-{
-    int id;
-    tNodoLista *posicion; /* pos actual */
-}tBandido;
+    tLista ruta; /* tablero */
+    tNodoLista *nodoJugador; /* posicion actual del jugador */
+    tNodoLista *nodoInicio; /* referencia al campamento inicial */
+    tNodoLista *nodoSalida; /* referencia a la ciudad refugio   */
+    tNodoLista **nodosBandidos; /* vec bandidos */
+    int cantBandidosVivos; /* cantidad de bandidos activos */
+    int vidas; /* hp del jugador */
+    int puntos; /* puntos acumulados en la partida */
+    int protegido; /* 1 = tiene proteccion de oasis */
+    int pierdeTurno; /* 1 = pierde el proximo turno */
+}tEstadoJuego;
 
 /// MOVIMIENTO
 typedef enum
@@ -56,8 +54,8 @@ typedef enum
 
 typedef struct
 {
-    tDireccion direccion;
-    int pasos;
+    tDireccion direccion; /* adelante o atras */
+    int pasos; /* cant de posiciones */
     int esBandido; /* 1 = es movimiento de bandido, 0 = jugador */
     int idBandido;
 }tMovimiento;
@@ -74,12 +72,12 @@ typedef struct
     int maximoTormentas;
 }tConfig;
 
-/// JUGADOR REGISTRADO
+/// JUGADOR REGISTRADO (arbol)
 typedef struct
 {
     char nombre[MAX_NOMBRE];
-    int puntosTotal;
-    int partidasJugadas;
+    int puntosTotal; /* acu de todas las partidas */
+    int partidasJugadas; /* cant de partidas */
 }tJugadorRegistrado;
 
 /// PARTIDA

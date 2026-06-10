@@ -35,6 +35,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Juego/archivos.h" />
+		<Unit filename="Juego/juego.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Juego/juego.h" />
+		<Unit filename="Juego/ranking.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Juego/ranking.h" />
 		<Unit filename="Juego/tablero.c">
 			<Option compilerVar="CC" />
 		</Unit>
