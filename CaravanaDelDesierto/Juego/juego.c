@@ -1,5 +1,5 @@
 #include "juego.h"
-
+#include "../registros/registros.h"
 void esperarEnter()
 {
     printf("\nPresione Enter para continuar...\n\n");
@@ -129,23 +129,48 @@ int juegoMoverJugador(tEstadoJuego *estado, tDireccion dir, int pasos)
     return llego;
 }
 
+/* Función auxiliar para la IA de los bandidos (Búsqueda bidireccional en anillo) */
+char calcularCaminoMasCorto(tNodoLista* nodoBandido, tNodoLista* nodoJugador)
+{
+    /* Si ya están en el mismo lugar, por defecto devolvemos Forward */
+    if (nodoBandido == nodoJugador) return 'F';
+
+    tNodoLista* exploradorF = nodoBandido;
+    tNodoLista* exploradorB = nodoBandido;
+
+    /* Mandamos dos punteros a caminar en direcciones opuestas al mismo tiempo */
+    while (exploradorF != nodoJugador && exploradorB != nodoJugador)
+    {
+        exploradorF = exploradorF->sig;
+        if (exploradorF == nodoJugador) return 'F'; /* Forward (Adelante) */
+
+        exploradorB = exploradorB->ant;
+        if (exploradorB == nodoJugador) return 'B'; /* Backward (Atrás) */
+    }
+
+    return 'F'; /* Retorno de seguridad */
+}
+
+/* Función principal de movimiento del bandido actualizada */
 void juegoMoverBandido(tEstadoJuego *estado, int indice)
 {
     tCelda *celdaNueva;
     tCelda *celdaVieja = (tCelda*)estado->nodosBandidos[indice]->info;
-    tCelda *celdaJugador = (tCelda*)estado->nodoJugador->info;
 
-    /* Quitamos el bandido de la celda actual */
+    /* 1. Quitamos al bandido de la celda actual */
     if (celdaVieja->cantBandidos > 0)
         celdaVieja->cantBandidos--;
 
-    /* Avanzamos o retrocedemos segun donde este el jugador */
-    if (celdaJugador->numero > celdaVieja->numero)
+    /* 2. Calculamos el camino real más corto en la topología circular */
+    char direccionOptima = calcularCaminoMasCorto(estado->nodosBandidos[indice], estado->nodoJugador);
+
+    /* 3. Movemos el puntero del bandido hacia la dirección ganadora */
+    if (direccionOptima == 'F')
         estado->nodosBandidos[indice] = estado->nodosBandidos[indice]->sig;
     else
         estado->nodosBandidos[indice] = estado->nodosBandidos[indice]->ant;
 
-    /* Ponemos el bandido en la nueva celda */
+    /* 4. Ponemos al bandido en la nueva celda física */
     celdaNueva = (tCelda *)estado->nodosBandidos[indice]->info;
     celdaNueva->cantBandidos++;
 }
@@ -154,22 +179,22 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
 {
     tCelda *celda = (tCelda*)estado->nodoJugador->info;
 
-    system("cls");
+    /* ELIMINAMOS EL system("cls"); QUE ESTABA ACÁ */
 
     /* Si la celda no tenia ningun efecto avisamos */
     if (!celda->tieneTormenta && !celda->tienePremio &&
-        !celda->tieneVida && !celda->tieneOasis)
-        printf("Casillero vacio. Sin efectos este turno.\n");
+            !celda->tieneVida && !celda->tieneOasis)
+        printf("\nCasillero vacio. Sin efectos este turno.\n"); /* Agregamos \n al principio */
 
     /* Tormenta */
     if (celda->tieneTormenta)
     {
         if (estado->protegido)
-            printf("El oasis te protegio de la tormenta!\n");
+            printf("\nEl oasis te protegio de la tormenta!\n");
         else
         {
             estado->pierdeTurno = 1;
-            printf("Tormenta de arena! Perdes el proximo turno.\n");
+            printf("\nTormenta de arena! Perdes el proximo turno.\n");
         }
     }
 
@@ -178,7 +203,7 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
     {
         estado->puntos++;
         celda->tienePremio = 0;
-        printf("Encontraste un premio! Puntos: %d\n", estado->puntos);
+        printf("\nEncontraste un premio! Puntos: %d\n", estado->puntos);
     }
 
     /* Vida extra */
@@ -186,14 +211,14 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
     {
         estado->vidas++;
         celda->tieneVida = 0;
-        printf("Encontraste una vida extra! Vidas: %d\n", estado->vidas);
+        printf("\nEncontraste una vida extra! Vidas: %d\n", estado->vidas);
     }
 
     /* Oasis */
     if (celda->tieneOasis)
     {
         estado->protegido = 1;
-        printf("Descansaste en un oasis! Estaras protegido el proximo turno.\n");
+        printf("\nDescansaste en un oasis! Estaras protegido el proximo turno.\n");
     }
 
     /* Consumimos proteccion si no estamos en oasis */
@@ -201,42 +226,42 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
         estado->protegido = 0;
 }
 
-int juegoVerificarColision(tEstadoJuego *estado)
+int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones)
 {
     if (estado->protegido)
         return 0;
 
     int i, j;
+    int bandidoBorrado = 0; /* Bandera para evitar el break */
     tCelda *celdaInicio;
     tCelda *celdaJugador = (tCelda*)estado->nodoJugador->info;
 
     if (celdaJugador->cantBandidos == 0)
         return 0;
 
-    printf("Un bandido te intercepto! Perdes una vida.\n");
-
-    /* Quitamos al jugador de la celda */
+    printf("\n¡Un bandido te intercepto! Perdes una vida.\n");
     celdaJugador->tieneJugador = 0;
 
-    /* Eliminamos 1 bandido de la celda y del arreglo */
-    for (i = 0; i < estado->cantBandidosVivos; i++)
+    /* Agregamos la bandera a la condición del for */
+    for (i = 0; i < estado->cantBandidosVivos && !bandidoBorrado; i++)
     {
         if (estado->nodosBandidos[i] == estado->nodoJugador)
         {
             celdaJugador->cantBandidos--;
 
-            /* Corremos el arreglo */
             for (j = i; j < estado->cantBandidosVivos - 1; j++)
                 estado->nodosBandidos[j] = estado->nodosBandidos[j + 1];
 
             estado->cantBandidosVivos--;
-            break;
+
+            /* Encendemos la bandera. El ciclo for va a cortar solo en la siguiente evaluación */
+            bandidoBorrado = 1;
         }
     }
 
-    /* Jugador pierde vida y vuelve al inicio */
     estado->vidas--;
     estado->nodoJugador = estado->nodoInicio;
+    estado->pierdeTurno = 0;
 
     celdaInicio = (tCelda*)estado->nodoInicio->info;
     celdaInicio->tieneJugador = 1;
@@ -267,26 +292,32 @@ void juegoMostrarHistorial(char historial[][10], int cantMovimientos)
     printf("\n================================\n");
 }
 
-int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado)
+int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosiciones)
 {
     tMovimiento mov;
     int llego;
+    int procesandoRonda = 1; /* Bandera para estructurar el bucle */
 
-    while (!colaEstaVacia(cola))
+    /* Agregamos la bandera a la condición del while */
+    while (!colaEstaVacia(cola) && procesandoRonda)
     {
         colaSacar(cola, &mov, sizeof(tMovimiento));
 
         if (!mov.esBandido)
         {
             llego = juegoMoverJugador(estado, mov.direccion, mov.pasos);
-            if (llego)
-                return 0;  /* gano */
+            if (llego) return 0;
+
+            system("cls");
+            printf("=== RESULTADO DE TU TURNO ===\n");
+            tableroMostrar(&estado->ruta, cantPosiciones);
 
             juegoAplicarEfecto(estado);
 
-            if (juegoVerificarColision(estado))
-                if (estado->vidas <= 0)
-                    return 0;  /* perdio */
+            if (juegoVerificarColision(estado, cantPosiciones))
+            {
+                if (estado->vidas <= 0) return 0;
+            }
 
             esperarEnter();
         }
@@ -294,14 +325,27 @@ int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado)
         {
             juegoMoverBandido(estado, mov.idBandido);
 
-            if (juegoVerificarColision(estado))
-                if (estado->vidas <= 0)
-                    return 0;  /* perdio */
-        }
+            tCelda *celdaBandido = (tCelda*)estado->nodosBandidos[mov.idBandido]->info;
+            if (celdaBandido->tieneJugador && !estado->protegido)
+            {
+                system("cls");
+                printf("\n=== EL ENEMIGO TE ALCANZÓ ===\n");
+                tableroMostrar(&estado->ruta, cantPosiciones);
 
+                juegoVerificarColision(estado, cantPosiciones);
+
+                if (estado->vidas <= 0) return 0;
+
+                esperarEnter();
+
+                /* Vaciamos la cola y apagamos la bandera para que el while termine de forma natural */
+                colaVaciar(cola);
+                procesandoRonda = 0;
+            }
+        }
     }
 
-    return 1;  /* partida continua */
+    return 1;
 }
 
 int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
@@ -335,44 +379,62 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
     esperarEnter();
 
     /* Turno */
+    /* Turno */
     while (partidaActiva)
     {
         system("cls");
         tableroMostrar(&estado.ruta, config->cantidadPosiciones);
         printf("Vidas: %d | Puntos: %d\n", estado.vidas, estado.puntos);
 
-        /* Turno perdido por tormenta */
+        /* --- BIFURCACIÓN ESTRUCTURADA DEL TURNO --- */
         if (estado.pierdeTurno)
         {
+            /* CASO A: ESTÁ ATRAPADO EN LA TORMENTA */
             printf("\nPerdes este turno por la tormenta!\n");
             estado.pierdeTurno = 0;
 
-            /* Los bandidos igual se mueven con la posicion anterior del jugador */
+            /* Los bandidos igual se mueven */
             juegoEncolarMovBandidos(&cola, &estado);
-            partidaActiva = juegoDesencolarYProcesar(&cola, &estado);
-            continue;
+            partidaActiva = juegoDesencolarYProcesar(&cola, &estado, config->cantidadPosiciones);
+
+            /* Mostramos el nuevo estado antes de avanzar */
+            printf("\n--- Los bandidos aprovecharon la tormenta y se movieron ---\n");
+            tableroMostrar(&estado.ruta, config->cantidadPosiciones);
+            printf("Vidas: %d | Puntos: %d\n", estado.vidas, estado.puntos);
+
+            /* --- TU NUEVO CARTEL ACÁ --- */
+            printf("\n¡¡¡TURNO PERDIDO!!!\n");
+
+            esperarEnter();
+        }
+        else
+        {
+
+            /* CASO B: TURNO NORMAL DEL JUGADOR */
+            printf("\nPresione Enter para TIRAR EL DADO...");
+            while(getchar() != '\n'); /* Frena el juego hasta que el jugador apriete Enter */
+
+            dado = juegoLanzarDado();
+            printf("\n¡Sacaste un %d!\n", dado);
+            printf("\nMover hacia adelante(A) o atras(S)? ");
+            scanf(" %c", &opcion);
+            while(getchar() != '\n');
+
+            dir = (opcion == 'A' || opcion == 'a')? MOV_ADELANTE : MOV_ATRAS;
+
+            /* Encolar: primero bandidos, despues el jugador */
+            juegoEncolarMovBandidos(&cola, &estado);
+            juegoEncolarMovJugador(&cola, dir, dado);
+
+            /* Registrar en historial */
+            juegoRegistrarMovimiento(historial, &cantMovimientos, dir, dado);
+
+            /* Desencolar y procesar */
+            partidaActiva = juegoDesencolarYProcesar(&cola, &estado, config->cantidadPosiciones);
         }
 
-        /* Lanzar dado */
-        dado = juegoLanzarDado();
-        printf("\nTiro del dado: %d\n", dado);
-        printf("\nMover hacia adelante(A) o atras(S)? ");
-        scanf(" %c", &opcion);
-        while(getchar() != '\n');
-
-        dir = (opcion == 'A' || opcion == 'a')? MOV_ADELANTE : MOV_ATRAS;
-
-        /* Encolar: primero bandidos (usan posicion anterior del jugador), despues el jugador */
-        juegoEncolarMovBandidos(&cola, &estado);
-        juegoEncolarMovJugador(&cola, dir, dado);
-
-        /* Registrar en hist */
-        juegoRegistrarMovimiento(historial, &cantMovimientos, dir, dado);
-
-        /* Desencolar */
-        partidaActiva = juegoDesencolarYProcesar(&cola, &estado);
-
-        /* Verificar condiciones de fin */
+        /* --- VERIFICACIÓN GENERAL DE FIN DE PARTIDA --- */
+        /* Esto se ejecuta siempre, sin importar qué tipo de turno fue */
         if (estado.nodoJugador == estado.nodoSalida)
         {
             gano = 1;
@@ -383,7 +445,6 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
             gano = 0;
             partidaActiva = 0;
         }
-
     }
 
     /* Fin de partida */
@@ -402,7 +463,7 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
     partida.puntos = estado.puntos;
     partida.cantMovimientos = cantMovimientos;
     partida.gano = gano;
-    guardarPartida(&partida);
+    guardarPartidaBD(&partida);
 
     /* Devolvemos los puntos */
     *puntos = estado.puntos;

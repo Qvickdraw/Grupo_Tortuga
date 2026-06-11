@@ -63,6 +63,10 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="registros/registros.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="registros/registros.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

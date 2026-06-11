@@ -20,15 +20,18 @@ void esperarEnter();
 /// COLA DE MOVIMIENTOS
 void juegoEncolarMovJugador(tCola *cola, tDireccion dir, int pasos); /* Encola el movimiento del jugador */
 void juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado); /* Encola el movimiento de cada bandido */
-int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado); /* Desencola y procesa los movs, 1 = bien - 0 = mal */
+int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosiciones);
+/* Desencola y procesa los movs, 1 = bien - 0 = mal */
 
 /// MOVIMIENTOS
+char calcularCaminoMasCorto(tNodoLista* nodoBandido, tNodoLista* nodoJugador);
 int  juegoMoverJugador(tEstadoJuego *estado, tDireccion dir, int pasos); /* Mueve al jug y verifica si salio, 1 = llego a la salida - 0 = no llego */
 void juegoMoverBandido(tEstadoJuego *estado, int indiceBandido); /* Mueve un bandido 1 paso acercandose al jugador */
 
 /// CONTENIDO DE CELDA
 void juegoAplicarEfecto(tEstadoJuego *estado); /* Aplica el efecto de la celda donde cayo el jugador */
-int juegoVerificarColision(tEstadoJuego *estado); /* Verifica colision jugador-bandido. 1 = si - 0 = no */
+int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosiciones);
+int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones); /* Verifica colision jugador-bandido. 1 = si - 0 = no */
 
 /// HISTORIAL
 void juegoRegistrarMovimiento(char historial[][10], int *cantMovimientos, tDireccion dir, int pasos);

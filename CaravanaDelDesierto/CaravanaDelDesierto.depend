@@ -63,3 +63,82 @@
 	"../TDA/lista.h"
 	"../TDA/cola.h"
 
+1781132542 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\archivos.c
+	"archivos.h"
+
+1781133791 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\archivos.h
+	<stdio.h>
+	<string.h>
+	"tipos.h"
+
+1781133791 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\tipos.h
+	"../TDA/lista.h"
+
+1781065248 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\lista.h
+	<stdlib.h>
+	<string.h>
+
+1781135231 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\juego.c
+	"juego.h"
+	"../registros/registros.h"
+
+1781132157 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\juego.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"tipos.h"
+	"tablero.h"
+	"archivos.h"
+	"../TDA/lista.h"
+	"../TDA/cola.h"
+
+1781065248 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\tablero.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"tipos.h"
+	"archivos.h"
+	"../TDA/lista.h"
+
+1781065248 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\cola.h
+	<stdlib.h>
+	<string.h>
+
+1781065248 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\ranking.c
+
+1781065248 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\tablero.c
+	"tablero.h"
+
+1781135077 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\main.c
+	<stdio.h>
+	<stdlib.h>
+	"TDA/arbol.h"
+	"Juego/tipos.h"
+	"Juego/archivos.h"
+	"Juego/tablero.h"
+	"Juego/juego.h"
+	"registros/registros.h"
+
+1781134148 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\arbol.c
+	"arbol.h"
+
+1781134119 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\arbol.h
+	<stdlib.h>
+	<string.h>
+
+1781065248 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\cola.c
+	"cola.h"
+
+1781065248 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\tda\lista.c
+	"lista.h"
+
+1781135556 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\registros\registros.c
+	"registros.h"
+
+1781134459 c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\registros\registros.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"../Juego/tipos.h"
+	"../TDA/arbol.h"
+

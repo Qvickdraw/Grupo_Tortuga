@@ -42,9 +42,9 @@ void celdaAString(const tCelda *celda, char *buf)
 
     /* Contamos cuantos elementos hay en la celda */
     int cant = celda->estaInicio + celda->estaSalida
-             + celda->tienePremio + celda->tieneVida
-             + celda->tieneOasis + celda->tieneTormenta
-             + celda->cantBandidos + celda->tieneJugador;
+               + celda->tienePremio + celda->tieneVida
+               + celda->tieneOasis + celda->tieneTormenta
+               + celda->cantBandidos + celda->tieneJugador;
 
     if (cant == 0)
     {
@@ -55,13 +55,41 @@ void celdaAString(const tCelda *celda, char *buf)
     if (cant == 1 && !celda->tieneJugador)
     {
         /* Un solo elemento fijo sin jugador: se escribe directo */
-        if (celda->estaInicio) { sprintf(buf, "I"); return; }
-        if (celda->estaSalida) { sprintf(buf, "S"); return; }
-        if (celda->tienePremio) { sprintf(buf, "P"); return; }
-        if (celda->tieneVida) { sprintf(buf, "V"); return; }
-        if (celda->tieneOasis) { sprintf(buf, "O"); return; }
-        if (celda->tieneTormenta) { sprintf(buf, "T"); return; }
-        if (celda->cantBandidos == 1) { sprintf(buf, "B"); return; }
+        if (celda->estaInicio)
+        {
+            sprintf(buf, "I");
+            return;
+        }
+        if (celda->estaSalida)
+        {
+            sprintf(buf, "S");
+            return;
+        }
+        if (celda->tienePremio)
+        {
+            sprintf(buf, "P");
+            return;
+        }
+        if (celda->tieneVida)
+        {
+            sprintf(buf, "V");
+            return;
+        }
+        if (celda->tieneOasis)
+        {
+            sprintf(buf, "O");
+            return;
+        }
+        if (celda->tieneTormenta)
+        {
+            sprintf(buf, "T");
+            return;
+        }
+        if (celda->cantBandidos == 1)
+        {
+            sprintf(buf, "B");
+            return;
+        }
     }
 
     /* Mas de un elemento o jugador presente: usamos corchetes */
@@ -136,24 +164,44 @@ int leerCaravana(tLista *lista, int cantPosiciones)
 
         /* Contenido despues de : */
         char *contenido = strchr(linea, ':');
-        if (!contenido)
-            continue;
-        contenido++; /* saltamos el ':' */
+
+        if (contenido)
+        {
+            contenido++;
+        }
+
 
         /* Recorremos el contenido caracter por caracter */
         for (c = contenido; *c != '\0' && *c != '\n'; c++)
         {
             switch (*c)
             {
-                case CHAR_INICIO: celda.estaInicio = 1; break;
-                case CHAR_SALIDA: celda.estaSalida = 1; break;
-                case CHAR_PREMIO: celda.tienePremio = 1; break;
-                case CHAR_VIDA: celda.tieneVida = 1; break;
-                case CHAR_OASIS: celda.tieneOasis = 1; break;
-                case CHAR_TORMENTA: celda.tieneTormenta= 1; break;
-                case CHAR_BANDIDO: celda.cantBandidos++; break;
-                case CHAR_JUGADOR: celda.tieneJugador = 1; break;
-                default: break;
+            case CHAR_INICIO:
+                celda.estaInicio = 1;
+                break;
+            case CHAR_SALIDA:
+                celda.estaSalida = 1;
+                break;
+            case CHAR_PREMIO:
+                celda.tienePremio = 1;
+                break;
+            case CHAR_VIDA:
+                celda.tieneVida = 1;
+                break;
+            case CHAR_OASIS:
+                celda.tieneOasis = 1;
+                break;
+            case CHAR_TORMENTA:
+                celda.tieneTormenta= 1;
+                break;
+            case CHAR_BANDIDO:
+                celda.cantBandidos++;
+                break;
+            case CHAR_JUGADOR:
+                celda.tieneJugador = 1;
+                break;
+            default:
+                break;
             }
         }
 

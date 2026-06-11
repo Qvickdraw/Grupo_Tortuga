@@ -12,6 +12,7 @@
 #define ARCHIVO_PARTIDAS "partidas.dat"
 #define ARCHIVO_INDICE "indice.dat"
 
+
 /// CONFIG
 int leerConfig(tConfig *config); /* Lee la config, devuelve 1 bien o 0 mal */
 void mostrarConfig(const tConfig *config); /* Muestra por pantalla la config */

@@ -73,14 +73,16 @@ int arbolInsertar(tArbol *arbol, const void *dato, unsigned tam, CMP_ARBOL cmp)
 
     return 1;
 }
-void arbolRecorrerIO(const tArbol *arbol, ACC_ARBOL acc)
+void arbolRecorrerIO(const tArbol *arbol, accion acc, void *param)
 {
     if (!*arbol)
         return;
 
-    arbolRecorrerIO(&(*arbol)->izq, acc);
-    acc((*arbol)->info);
-    arbolRecorrerIO(&(*arbol)->der, acc);
+    arbolRecorrerIO(&(*arbol)->izq, acc, param); /* Va a la izquierda pasando el param */
+
+    acc((*arbol)->info, param);                  /* Ejecuta la acción con la info y el param */
+
+    arbolRecorrerIO(&(*arbol)->der, acc, param); /* Va a la derecha pasando el param */
 }
 int arbolBuscarElem(const tArbol *arbol, const void *clave, void *dato, unsigned tam, CMP_ARBOL cmp)
 {
