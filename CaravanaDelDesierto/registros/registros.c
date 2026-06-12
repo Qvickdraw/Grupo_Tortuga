@@ -92,7 +92,7 @@ int loginJugador(const char *nombreBuscado, tJugador *jugadorActual, long *offse
         *offsetActual = regEncontrado.offset;
 
         printf("\n===================================\n");
-        printf("¡Bienvenido nuevamente, %s!\n", jugadorActual->nombre);
+        printf("Bienvenido nuevamente, %s!\n", jugadorActual->nombre);
         printf("Partidas jugadas: %d | Puntaje total: %d\n",
                jugadorActual->partidasJugadas, jugadorActual->puntajeTotal);
         printf("===================================\n");
@@ -121,7 +121,7 @@ int loginJugador(const char *nombreBuscado, tJugador *jugadorActual, long *offse
         arbolInsertar(indice, &regEncontrado, sizeof(tRegIndice), cmpIndiceJugador);
 
         printf("\n===================================\n");
-        printf("Jugador nuevo registrado.\n¡Bienvenido a la Caravana, %s!\n", jugadorActual->nombre);
+        printf("Jugador nuevo registrado.\nBienvenido a la Caravana, %s!\n", jugadorActual->nombre);
         printf("===================================\n");
         return 1;
     }

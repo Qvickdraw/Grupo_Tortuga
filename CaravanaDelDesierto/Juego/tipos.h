@@ -45,7 +45,7 @@ typedef struct
     int pierdeTurno; /* 1 = pierde el proximo turno */
 }tEstadoJuego;
 
-/// MOVIMIENTO
+/// MOVIMIENTO ----REMOVER COMPLETAMENTE ----- REEMPLAZAR CON CHAR
 typedef enum
 {
     MOV_ADELANTE, /* 0 */

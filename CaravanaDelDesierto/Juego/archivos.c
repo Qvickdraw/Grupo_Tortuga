@@ -18,6 +18,15 @@ int leerConfig(tConfig *config)
     fscanf(pf, "maximo_oasis:%d\n", &config->maximoOasis);
     fscanf(pf, "maximo_tormentas:%d\n", &config->maximoTormentas);
 
+
+    if (config->maximoBandidos < config->vidasInicio)
+    {
+        printf("\nError: Ingreso invalido en la configuracion.\n");
+        printf("La cantidad maxima de bandidos (%d) no puede ser menor a las vidas de inicio (%d).\n",config->maximoBandidos, config->vidasInicio);
+
+        fclose(pf); /* Fundamental cerrar el archivo antes de abortar */
+        return 0;   /* Devuelve 0 para invalidar la partida */
+    }
     fclose(pf);
     return 1;
 }
