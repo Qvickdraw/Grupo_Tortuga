@@ -7,7 +7,7 @@
 
 
 #include "archivos.h"
-#include "../TDA/lista.h"
+
 
 /// TABLERO
 int tableroGenerar(const tConfig *config); /* Genera la lista/tablero con sus celdas segun la config, devuelve 1 bien o 0 mal */

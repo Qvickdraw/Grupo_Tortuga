@@ -8,10 +8,14 @@ void esperarEnter()
 
 int juegoInicializar(tEstadoJuego *estado, const tConfig *config)
 {
-    if(!leerCaravana(&estado->ruta, config->cantidadPosiciones))
+
+    int codError;
+    codError=leerCaravana(&estado->ruta, config->cantidadPosiciones);
+
+    if(codError!=TODO_OK)
     {
         printf("\nNo se puedo cargar la caravana.\n");
-        return 0;
+        return codError;
     }
 
     tNodoLista *actual = estado->ruta->sig;
@@ -28,8 +32,10 @@ int juegoInicializar(tEstadoJuego *estado, const tConfig *config)
     estado->pierdeTurno = 0;
 
     estado->nodosBandidos = malloc(config->maximoBandidos * sizeof(tNodoLista*));
+
     if(!estado->nodosBandidos)
-        return 0;
+        return SIN_MEM;
+
     estado->cantBandidosVivos = 0;
 
     for (i = 0; i < config->cantidadPosiciones; i++)
@@ -37,13 +43,13 @@ int juegoInicializar(tEstadoJuego *estado, const tConfig *config)
         celda = (tCelda *)actual->info;
         for (j = 0; j < celda->cantBandidos; j++)
         {
-            estado->nodosBandidos[estado->cantBandidosVivos] = actual;
+            *(estado->nodosBandidos + estado->cantBandidosVivos) = actual;
             estado->cantBandidosVivos++;
         }
         actual = actual->sig;
     }
 
-    return 1;
+    return TODO_OK;
 }
 
 void juegoDestruir(tEstadoJuego *estado)
@@ -58,20 +64,26 @@ int juegoLanzarDado()
     return 1 + rand() % 6;
 }
 
-void juegoEncolarMovJugador(tCola *cola, tDireccion dir, int pasos)
+int juegoEncolarMovJugador(tCola *cola, tDireccion dir, int pasos)
 {
+    int codError;
     tMovimiento mov;
     mov.direccion = dir;
     mov.pasos = pasos;
     mov.esBandido = 0;
     mov.idBandido = -1;
 
-    colaPoner(cola, &mov, sizeof(tMovimiento));
+    codError=colaPoner(cola, &mov, sizeof(tMovimiento));
+    if(codError!=TODO_OK)
+        return codError;
+
+    return TODO_OK;
 }
 
-void juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado)
+int juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado)
 {
     tMovimiento mov;
+    int codError;
     int i;
 
     for (i = 0; i < estado->cantBandidosVivos; i++)
@@ -83,8 +95,11 @@ void juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado)
 
         mov.direccion=calcularCaminoMasCorto(estado->nodosBandidos[i], estado->nodoJugador);
 
-        colaPoner(cola, &mov, sizeof(tMovimiento));
+        codError=colaPoner(cola, &mov, sizeof(tMovimiento));
+        if(codError!=TODO_OK)
+            return codError;
     }
+    return TODO_OK;
 }
 
 int juegoMoverJugador(tEstadoJuego *estado, tDireccion dir, int pasos)
@@ -147,10 +162,10 @@ char calcularCaminoMasCorto(tNodoLista* nodoBandido, tNodoLista* nodoJugador)
 }
 
 
-void juegoMoverBandido(tEstadoJuego *estado,tDireccion direccionOptima, int indiceBandido, int pasos)
+void juegoMoverBandido(tEstadoJuego *estado, tDireccion direccionOptima, int indiceBandido, int pasos)
 {
     tCelda *celdaNueva;
-    tCelda *celdaVieja = (tCelda*)estado->nodosBandidos[indiceBandido]->info;
+    tCelda *celdaVieja = (tCelda*)(*(estado->nodosBandidos + indiceBandido))->info;
 
     if (celdaVieja->cantBandidos > 0)
         celdaVieja->cantBandidos--;
@@ -158,14 +173,14 @@ void juegoMoverBandido(tEstadoJuego *estado,tDireccion direccionOptima, int indi
     while (pasos > 0)
     {
         if (direccionOptima == MOV_ADELANTE)
-            estado->nodosBandidos[indiceBandido] = estado->nodosBandidos[indiceBandido]->sig;
+            *(estado->nodosBandidos + indiceBandido) = (*(estado->nodosBandidos + indiceBandido))->sig;
         else
-            estado->nodosBandidos[indiceBandido] = estado->nodosBandidos[indiceBandido]->ant;
+            *(estado->nodosBandidos + indiceBandido) = (*(estado->nodosBandidos + indiceBandido))->ant;
 
         pasos--;
     }
 
-    celdaNueva = (tCelda *)estado->nodosBandidos[indiceBandido]->info;
+    celdaNueva = (tCelda *)(*(estado->nodosBandidos + indiceBandido))->info;
     celdaNueva->cantBandidos++;
 }
 
@@ -173,9 +188,12 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
 {
     tCelda *celda = (tCelda*)estado->nodoJugador->info;
 
-    if (!celda->tieneTormenta && !celda->tienePremio &&
-            !celda->tieneVida && !celda->tieneOasis)
-        printf("\nCasillero vacio. Sin efectos este turno.\n"); /* Agregamos \n al principio */
+    if (!celda->tieneTormenta && !celda->tienePremio && !celda->tieneVida && !celda->tieneOasis)
+    {
+        printf("\nCasillero vacio. Sin efectos este turno.\n");
+        return;
+    }
+
 
     if (celda->tieneTormenta)
     {
@@ -211,6 +229,8 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
 
     if (estado->protegido && !celda->tieneOasis)
         estado->protegido = 0;
+
+    return;
 }
 
 int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones)
@@ -236,7 +256,7 @@ int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones)
             celdaJugador->cantBandidos--;
 
             for (j = i; j < estado->cantBandidosVivos - 1; j++)
-                estado->nodosBandidos[j] = estado->nodosBandidos[j + 1];
+                *(estado->nodosBandidos+j) = *(estado->nodosBandidos+j+1);
 
             estado->cantBandidosVivos--;
 
@@ -261,9 +281,9 @@ void juegoRegistrarMovimiento(char historial[][10], int *cantMovimientos, tDirec
         return;
 
     if (dir == MOV_ADELANTE)
-        sprintf(historial[*cantMovimientos], "F%d", pasos);
+        sprintf(*(historial + *cantMovimientos), "F%d", pasos);
     else
-        sprintf(historial[*cantMovimientos], "B%d", pasos);
+        sprintf(*(historial + *cantMovimientos), "B%d", pasos);
 
     (*cantMovimientos)++;
 }
@@ -283,6 +303,7 @@ int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosicion
     tMovimiento mov;
     int llego = 0;
     int jugadorSeMovio = 0;
+
 
     system("cls");
     printf("=== MOVIMIENTOS DEL TURNO ===\n");
@@ -333,19 +354,20 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
     int cantMovimientos = 0, partidaActiva = 1, gano = 0, dado;
     tDireccion dir;
     tPartida partida;
+    int codError;
 
-
-    if (!tableroGenerar(config))
+    codError=tableroGenerar(config);
+    if (codError!=TODO_OK)
     {
         printf("Error al generar el tablero.\n");
-        return 0;
+        return codError;
     }
 
-
-    if (!juegoInicializar(&estado, config))
+    codError=juegoInicializar(&estado, config);
+    if (codError!=TODO_OK)
     {
         printf("Error al inicializar el juego.\n");
-        return 0;
+        return codError;
     }
 
 
@@ -367,7 +389,15 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
         if (estado.pierdeTurno)
         {
 
-            juegoEncolarMovBandidos(&cola, &estado);
+
+            codError=juegoEncolarMovBandidos(&cola, &estado);
+            if (codError!=TODO_OK)
+            {
+                printf("Error al encolar movimientos de bandido.\n");
+                colaVaciar(&cola);
+                juegoDestruir(&estado);
+                return codError;
+            }
             partidaActiva = juegoDesencolarYProcesar(&cola, &estado, config->cantidadPosiciones);
             estado.pierdeTurno = 0;
 
@@ -392,14 +422,31 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
                     printf("\nDireccion elegida invalida\n");
                     printf("\nMover hacia adelante(A) o atras(S)? ");
                 }
-            }while(toupper(opcion)!= 'A' &&  toupper(opcion)!= 'S');
+            }
+            while(toupper(opcion)!= 'A' &&  toupper(opcion)!= 'S');
 
 
             dir = (toupper(opcion) == 'A')? MOV_ADELANTE : MOV_ATRAS;
 
-            juegoEncolarMovJugador(&cola, dir, dado);
-            juegoEncolarMovBandidos(&cola, &estado);
 
+            codError=juegoEncolarMovJugador(&cola, dir, dado);
+            if (codError!=TODO_OK)
+            {
+                printf("Error al encolar movimientos de jugador.\n");
+                colaVaciar(&cola);
+                juegoDestruir(&estado);
+                return codError;
+            }
+
+
+            codError=juegoEncolarMovBandidos(&cola, &estado);
+            if (codError!=TODO_OK)
+            {
+                printf("Error al encolar movimientos de bandido.\n");
+                colaVaciar(&cola);
+                juegoDestruir(&estado);
+                return codError;
+            }
             juegoRegistrarMovimiento(historial, &cantMovimientos, dir, dado);
 
             partidaActiva = juegoDesencolarYProcesar(&cola, &estado, config->cantidadPosiciones);
@@ -422,7 +469,7 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
         printf("\nPuntos obtenidos: %d", estado.puntos);
         printf("\nPuntos por victoria: 2");
         estado.puntos+=2;
-        printf("\nPuntos totales:%d", estado.puntos);
+        printf("\nPuntos totales:%d\n", estado.puntos);
     }
     else
     {
@@ -439,8 +486,16 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
     *puntos = estado.puntos;
     partida.cantMovimientos = cantMovimientos;
     partida.gano = gano;
-    guardarPartidaBD(&partida);
 
+
+    codError=guardarPartidaBD(&partida);
+    if (codError!=TODO_OK)
+    {
+        printf("Error al guardar partida.\n");
+        colaVaciar(&cola);
+        juegoDestruir(&estado);
+        return codError;
+    }
 
 
     colaVaciar(&cola);

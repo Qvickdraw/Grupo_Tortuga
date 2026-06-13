@@ -2,12 +2,18 @@
 #define TIPOS_H_INCLUDED
 
 #include "../TDA/lista.h"
+#include "../TDA/cola.h"
+#include "../TDA/arbol.h"
 
 /// CODIGOS DE ERROR
 #define TODO_OK 1
 #define ERR_ARCH 2
 #define SIN_MEM 3
 #define CLA_DUP 4
+#define ERR_CONFIG 5
+#define COLA_VACIA 6
+#define LISTA_VACIA 7
+#define JUGADOR_EQUIVOCADO 8
 
 
 /// CONSTANTES

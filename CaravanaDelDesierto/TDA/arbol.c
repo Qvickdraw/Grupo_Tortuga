@@ -1,4 +1,4 @@
-#include "arbol.h"
+#include "../Juego/tipos.h"
 
 void arbolCrear(tArbol *arbol)
 {
@@ -26,19 +26,19 @@ int arbolEstaLleno(const tArbol *arbol, unsigned tam)
 
     tNodoArbol *nue  = malloc(sizeof(tNodoArbol));
     if (!nue)
-        return 1;
+        return SIN_MEM;
 
     void *info = malloc(tam);
     if (!info)
     {
         free(nue);
-        return 1;
+        return SIN_MEM;
     }
 
     free(info);
     free(nue);
 
-    return 0;
+    return TODO_OK;
 }
 int arbolInsertar(tArbol *arbol, const void *dato, unsigned tam, CMP_ARBOL cmp)
 {
@@ -51,18 +51,18 @@ int arbolInsertar(tArbol *arbol, const void *dato, unsigned tam, CMP_ARBOL cmp)
         else if (comp > 0)
             return arbolInsertar(&(*arbol)->der, dato, tam, cmp);
         else
-            return 0; /* duplicado */
+            return 0;
     }
 
     tNodoArbol *nue = malloc(sizeof(tNodoArbol));
     if (!nue)
-        return 0;
+        return SIN_MEM;
 
     nue->info = malloc(tam);
     if (!nue->info)
     {
         free(nue);
-        return 0;
+        return SIN_MEM;
     }
 
     memcpy(nue->info, dato, tam);
@@ -71,18 +71,18 @@ int arbolInsertar(tArbol *arbol, const void *dato, unsigned tam, CMP_ARBOL cmp)
     nue->der = NULL;
     *arbol   = nue;
 
-    return 1;
+    return TODO_OK;
 }
 void arbolRecorrerIO(const tArbol *arbol, accion acc, void *param)
 {
     if (!*arbol)
         return;
 
-    arbolRecorrerIO(&(*arbol)->izq, acc, param); /* Va a la izquierda pasando el param */
+    arbolRecorrerIO(&(*arbol)->izq, acc, param);
 
-    acc((*arbol)->info, param);                  /* Ejecuta la acción con la info y el param */
+    acc((*arbol)->info, param);
 
-    arbolRecorrerIO(&(*arbol)->der, acc, param); /* Va a la derecha pasando el param */
+    arbolRecorrerIO(&(*arbol)->der, acc, param);
 }
 int arbolBuscarElem(const tArbol *arbol, const void *clave, void *dato, unsigned tam, CMP_ARBOL cmp)
 {
@@ -103,33 +103,4 @@ int arbolBuscarElem(const tArbol *arbol, const void *clave, void *dato, unsigned
 
     return 0;
 }
-tNodoArbol *arbolBuscarNodo(const tArbol *arbol, const void *clave, CMP_ARBOL cmp)
-{
-    const tArbol *p = arbol;
 
-    while (*p)
-    {
-        int comp = cmp(clave, (*p)->info);
-
-        if (comp == 0)
-            return *p;
-
-        p = (comp < 0) ? &(*p)->izq : &(*p)->der;
-    }
-
-    return NULL;
-}
-tArbol *arbolBuscar(tArbol *arbol, const void *clave, CMP_ARBOL cmp)
-{
-    while (*arbol)
-    {
-        int comp = cmp(clave, (*arbol)->info);
-
-        if (comp == 0)
-            return arbol;
-
-        arbol = (comp < 0) ? &(*arbol)->izq : &(*arbol)->der;
-    }
-
-    return arbol;
-}

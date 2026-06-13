@@ -2,29 +2,61 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="Juego\tipos.h" open="1" top="1" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2395" topLine="66" />
-		</Cursor>
-	</File>
 	<File name="TDA\cola.c" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="1143" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="7" />
+			<Collapse line="21" />
+			<Collapse line="25" />
+			<Collapse line="39" />
+			<Collapse line="65" />
+			<Collapse line="84" />
+		</Folding>
+	</File>
+	<File name="Juego\tipos.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="306" topLine="6" />
 		</Cursor>
 	</File>
-	<File name="registros\registros.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Juego\archivos.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3878" topLine="116" />
+			<Cursor1 position="6064" topLine="121" />
 		</Cursor>
+		<Folding>
+			<Collapse line="38" />
+			<Collapse line="51" />
+		</Folding>
 	</File>
-	<File name="Juego\tablero.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="TDA\arbol.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4232" topLine="75" />
+			<Cursor1 position="1202" topLine="0" />
 		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="7" />
+			<Collapse line="19" />
+			<Collapse line="23" />
+			<Collapse line="43" />
+			<Collapse line="76" />
+			<Collapse line="87" />
+		</Folding>
 	</File>
-	<File name="Juego\ranking.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Juego\ranking.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="86" topLine="0" />
+			<Cursor1 position="852" topLine="6" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="10" />
+			<Collapse line="27" />
+		</Folding>
+	</File>
+	<File name="Juego\archivos.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="336" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="TDA\cola.h" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -32,39 +64,62 @@
 			<Cursor1 position="49" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Juego\juego.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Juego\juego.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="129" topLine="0" />
+			<Cursor1 position="13510" topLine="141" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="55" />
+			<Collapse line="105" />
+			<Collapse line="144" />
+			<Collapse line="165" />
+			<Collapse line="187" />
+			<Collapse line="236" />
+			<Collapse line="278" />
+			<Collapse line="291" />
+			<Collapse line="300" />
+		</Folding>
+	</File>
+	<File name="TDA\lista.c" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2304" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="7" />
+			<Collapse line="29" />
+			<Collapse line="33" />
+			<Collapse line="69" />
+			<Collapse line="96" />
+			<Collapse line="100" />
+			<Collapse line="114" />
+			<Collapse line="132" />
+		</Folding>
+	</File>
+	<File name="Juego\tablero.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="136" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="registros\registros.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="registros\registros.c" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="633" topLine="0" />
+			<Cursor1 position="6896" topLine="3" />
+		</Cursor>
+	</File>
+	<File name="Juego\ranking.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="324" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="TDA\lista.h" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="1011" topLine="4" />
 		</Cursor>
 	</File>
-	<File name="Juego\archivos.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Juego\juego.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="59" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="main.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2919" topLine="59" />
-		</Cursor>
-	</File>
-	<File name="Juego\juego.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9660" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="Juego\archivos.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="336" topLine="0" />
+			<Cursor1 position="547" topLine="2" />
 		</Cursor>
 	</File>
 	<File name="TDA\arbol.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -72,24 +127,19 @@
 			<Cursor1 position="425" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="Juego\tablero.h" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.c" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="580" topLine="0" />
+			<Cursor1 position="1192" topLine="27" />
 		</Cursor>
 	</File>
-	<File name="Juego\ranking.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="registros\registros.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="139" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="TDA\lista.c" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="Juego\tablero.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1758" topLine="65" />
-		</Cursor>
-	</File>
-	<File name="TDA\arbol.c" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2058" topLine="76" />
+			<Cursor1 position="2467" topLine="70" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

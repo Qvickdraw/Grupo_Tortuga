@@ -3,23 +3,18 @@
 int tableroGenerar(const tConfig *config)
 {
     srand((unsigned int)time(NULL));
-    int i, pos;
+    int i, pos, codError;
     int cantPos = config->cantidadPosiciones;
 
-    if (cantPos < 3) /* Verificamos min de pos, 1 para ini 1 para salida y otra para moverse */
-    {
-        printf("Error: se necesitan al menos 3 posiciones.\n");
-        return 0;
-    }
+
 
     tCelda *celdas = malloc(cantPos * sizeof(tCelda));
     if (!celdas)
     {
-        printf("Error: memoria insuficiente.\n");
-        return 0;
+        printf("Error al generar celda.\n");
+        return SIN_MEM;
     }
 
-    /* Inicializamos las celdas usando aritmética de punteros */
     for (i = 0; i < cantPos; i++)
     {
         (celdas + i)->numero = i + 1;
@@ -33,12 +28,11 @@ int tableroGenerar(const tConfig *config)
         (celdas + i)->tieneJugador = 0;
     }
 
-    /* Inicio y salida */
-    celdas->estaInicio = 1;           /* 'celdas' equivale a (celdas + 0) */
+    celdas->estaInicio = 1;
     celdas->tieneJugador = 1;
-    (celdas + cantPos - 1)->estaSalida = 1; /* Último elemento */
+    (celdas + cantPos - 1)->estaSalida = 1;
 
-    /* Premios  */
+
     for (i = 0; i < config->maximoPremios; i++)
     {
         do
@@ -49,7 +43,6 @@ int tableroGenerar(const tConfig *config)
         (celdas + pos)->tienePremio = 1;
     }
 
-    /* Vidas extra */
     for (i = 0; i < config->maximoVidasExtra; i++)
     {
         do
@@ -60,7 +53,6 @@ int tableroGenerar(const tConfig *config)
         (celdas + pos)->tieneVida = 1;
     }
 
-    /* Oasis */
     for (i = 0; i < config->maximoOasis; i++)
     {
         do
@@ -71,7 +63,6 @@ int tableroGenerar(const tConfig *config)
         (celdas + pos)->tieneOasis = 1;
     }
 
-    /* Tormentas */
     for (i = 0; i < config->maximoTormentas; i++)
     {
         do
@@ -82,7 +73,6 @@ int tableroGenerar(const tConfig *config)
         (celdas + pos)->tieneTormenta = 1;
     }
 
-    /* Bandidos */
     for (i = 0; i < config->maximoBandidos; i++)
     {
         do
@@ -93,21 +83,18 @@ int tableroGenerar(const tConfig *config)
         (celdas + pos)->cantBandidos++;
     }
 
-    if (!escribirCaravana(celdas, cantPos)) /* Generamos el caravana.txt */
+    codError=escribirCaravana(celdas, cantPos);
+    if (codError!=TODO_OK)
     {
         free(celdas);
-        return 0;
+        return codError;
     }
 
     free(celdas);
 
-    return 1;
+    return TODO_OK;
 }
 
-void tableroDestruir(tLista *lista)
-{
-    listaVaciar(lista);
-}
 
 void tableroMostrar(tLista *lista, int cantPosiciones)
 {
@@ -126,7 +113,6 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
     {
         tCelda *c = (tCelda *)actual->info;
 
-        /* Contamos cuantos elementos hay */
         int cant = c->estaInicio + c->estaSalida + c->tienePremio
                  + c->tieneVida + c->tieneOasis + c->tieneTormenta
                  + c->cantBandidos + c->tieneJugador;
@@ -160,7 +146,7 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
             for (j = 0; j < c->cantBandidos; j++) printf("B ");
 
             if (c->tieneJugador) printf("J ");
-            printf("\b]");  /* borramos el ultimo espacio y cerramos */
+            printf("\b]");
         }
 
         printf("\n");

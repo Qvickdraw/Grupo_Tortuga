@@ -28,28 +28,28 @@ int cargarJugadoresEnLista(const char *nomArchivo, Lista *lista)
 {
     FILE *fp = fopen(nomArchivo, "rb");
     tJugador jugadorAux;
-    int estado;
+    int codError=TODO_OK;
 
     if (!fp)
     {
         return ERR_ARCH;
     }
 
-    while (fread(&jugadorAux, sizeof(tJugador), 1, fp) == TODO_OK)
+    while (fread(&jugadorAux, sizeof(tJugador), 1, fp) == 1)
     {
-        estado = ponerEnOrden(lista, &jugadorAux, sizeof(tJugador), cmpJugadoresPorPuntos, NULL);
+        codError = ponerEnOrden(lista, &jugadorAux, sizeof(tJugador), cmpJugadoresPorPuntos, NULL);
 
-        if (estado == SIN_MEM)
+        if (codError != TODO_OK)
         {
 
             vaciarLista(lista);
             fclose(fp);
-            return estado;
+            return codError;
         }
     }
 
     fclose(fp);
-    return TODO_OK;
+    return codError;
 }
 int mostrarRankingJugadores()
 {

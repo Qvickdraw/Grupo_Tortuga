@@ -1,4 +1,4 @@
-#include "cola.h"
+#include "../Juego/tipos.h"
 
 void colaCrear(tCola *cola)
 {
@@ -40,13 +40,13 @@ int colaPoner(tCola *cola, const void *dato, unsigned tam)
 {
     tNodoCola *nue = malloc(sizeof(tNodoCola));
     if (!nue)
-        return 0;
+        return SIN_MEM;
 
     nue->info = malloc(tam);
     if (!nue->info)
     {
         free(nue);
-        return 0;
+        return SIN_MEM;
     }
 
     memcpy(nue->info, dato, tam);
@@ -60,14 +60,14 @@ int colaPoner(tCola *cola, const void *dato, unsigned tam)
 
     cola->ult = nue;
 
-    return 1;
+    return TODO_OK;
 }
 int colaSacar(tCola *cola, void *dato, unsigned tam)
 {
     tNodoCola *aux = cola->pri;
 
     if (!aux)
-        return 0;
+        return COLA_VACIA;
 
     cola->pri = aux->sig;
 
@@ -79,14 +79,14 @@ int colaSacar(tCola *cola, void *dato, unsigned tam)
     if (cola->pri == NULL)
         cola->ult = NULL;
 
-    return 1;
+    return TODO_OK;
 }
 int colaPrimero(const tCola *cola, void *dato, unsigned tam)
 {
     if (!cola->pri)
-        return 0;
+        return COLA_VACIA;
 
     memcpy(dato, cola->pri->info, MINIMO(tam, cola->pri->tam));
 
-    return 1;
+    return TODO_OK;
 }

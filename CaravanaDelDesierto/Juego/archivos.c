@@ -6,10 +6,9 @@ int leerConfig(tConfig *config)
     if (!pf)
     {
         printf("Error: no se pudo abrir %s\n", ARCHIVO_CONFIG);
-        return 0;
+        return ERR_ARCH;
     }
 
-    /* EL ORDEN EN EL CONFIG.TXT IMPORTA! */
     fscanf(pf, "cantidad_posiciones:%d\n", &config->cantidadPosiciones);
     fscanf(pf, "vidas_inicio:%d\n", &config->vidasInicio);
     fscanf(pf, "maximo_bandidos:%d\n", &config->maximoBandidos);
@@ -24,11 +23,16 @@ int leerConfig(tConfig *config)
         printf("\nError: Ingreso invalido en la configuracion.\n");
         printf("La cantidad maxima de bandidos (%d) no puede ser menor a las vidas de inicio (%d).\n",config->maximoBandidos, config->vidasInicio);
 
-        fclose(pf); /* Fundamental cerrar el archivo antes de abortar */
-        return 0;   /* Devuelve 0 para invalidar la partida */
+        fclose(pf);
+        return ERR_CONFIG;
+    }
+    if (config->cantidadPosiciones < 3)
+    {
+        printf("Error: se necesitan al menos 3 posiciones.\n");
+        return ERR_CONFIG;
     }
     fclose(pf);
-    return 1;
+    return TODO_OK;
 }
 
 void mostrarConfig(const tConfig *config)
@@ -49,7 +53,6 @@ void celdaAString(const tCelda *celda, char *buf)
     char tmp[50] = "[";
     int i;
 
-    /* Contamos cuantos elementos hay en la celda */
     int cant = celda->estaInicio + celda->estaSalida
                + celda->tienePremio + celda->tieneVida
                + celda->tieneOasis + celda->tieneTormenta
@@ -63,7 +66,7 @@ void celdaAString(const tCelda *celda, char *buf)
 
     if (cant == 1 && !celda->tieneJugador)
     {
-        /* Un solo elemento fijo sin jugador: se escribe directo */
+
         if (celda->estaInicio)
         {
             sprintf(buf, "I");
@@ -101,7 +104,6 @@ void celdaAString(const tCelda *celda, char *buf)
         }
     }
 
-    /* Mas de un elemento o jugador presente: usamos corchetes */
     if (celda->estaInicio) strcat(tmp, "I ");
     if (celda->estaSalida) strcat(tmp, "S ");
     if (celda->tienePremio) strcat(tmp, "P ");
@@ -114,7 +116,6 @@ void celdaAString(const tCelda *celda, char *buf)
 
     if (celda->tieneJugador) strcat(tmp, "J ");
 
-    /* Reemplazamos el ultimo espacio por el cierre */
     tmp[strlen(tmp) - 1] = ']';
 
     strcpy(buf, tmp);
@@ -128,21 +129,23 @@ int escribirCaravana(tCelda *celdas, int cantPosiciones)
     if (!pf)
     {
         printf("Error: no se pudo crear %s\n", ARCHIVO_CARAVANA);
-        return 0;
+        return ERR_ARCH;
     }
 
     for (i = 0; i < cantPosiciones; i++)
     {
-        celdaAString(&celdas[i], buf);
-        fprintf(pf, "%02d: %s\n", celdas[i].numero, buf);
+        celdaAString((celdas + i), buf);
+
+        fprintf(pf, "%02d: %s\n", (celdas + i)->numero, buf);
     }
 
     fclose(pf);
-    return 1;
+    return TODO_OK;
 }
 
 int leerCaravana(tLista *lista, int cantPosiciones)
 {
+    int codError=TODO_OK;
     char *c;
     char linea[100];
     int  leidos = 0;
@@ -150,7 +153,7 @@ int leerCaravana(tLista *lista, int cantPosiciones)
     if (!f)
     {
         printf("Error: no se pudo abrir %s\n", ARCHIVO_CARAVANA);
-        return 0;
+        return ERR_ARCH;
     }
 
     listaCrear(lista);
@@ -168,10 +171,8 @@ int leerCaravana(tLista *lista, int cantPosiciones)
         celda.cantBandidos = 0;
         celda.tieneJugador = 0;
 
-        /* Numero de pos antes de ':' */
         celda.numero = atoi(linea);
 
-        /* Contenido despues de : */
         char *contenido = strchr(linea, ':');
 
         if (contenido)
@@ -179,8 +180,6 @@ int leerCaravana(tLista *lista, int cantPosiciones)
             contenido++;
         }
 
-
-        /* Recorremos el contenido caracter por caracter */
         for (c = contenido; *c != '\0' && *c != '\n'; c++)
         {
             switch (*c)
@@ -213,18 +212,19 @@ int leerCaravana(tLista *lista, int cantPosiciones)
                 break;
             }
         }
-
-        if (!listaPoner(lista, &celda, sizeof(tCelda)))
+        codError=listaPoner(lista, &celda, sizeof(tCelda));
+        if (codError!=TODO_OK)
         {
             fclose(f);
-            return 0;
+            listaVaciar(lista);
+            return codError;
         }
 
         leidos++;
     }
 
     fclose(f);
-    return 1;
+    return codError;
 }
 
 int guardarPartida(const tPartida *partida)
@@ -233,10 +233,10 @@ int guardarPartida(const tPartida *partida)
     if (!pf)
     {
         printf("Error: no se pudo abrir %s\n", ARCHIVO_PARTIDAS);
-        return 0;
+        return ERR_ARCH;
     }
 
     fwrite(partida, sizeof(tPartida), 1, pf);
     fclose(pf);
-    return 1;
+    return TODO_OK;
 }

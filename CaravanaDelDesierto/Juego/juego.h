@@ -9,8 +9,7 @@
 
 #include "tablero.h"
 #include "archivos.h"
-#include "../TDA/lista.h"
-#include "../TDA/cola.h"
+
 
 /// JUEGO
 int juegoInicializar(tEstadoJuego *estado, const tConfig *config); /* Inicia el juego */
@@ -19,8 +18,8 @@ int juegoLanzarDado();
 void esperarEnter();
 
 /// COLA DE MOVIMIENTOS
-void juegoEncolarMovJugador(tCola *cola, tDireccion dir, int pasos); /* Encola el movimiento del jugador */
-void juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado); /* Encola el movimiento de cada bandido */
+int juegoEncolarMovJugador(tCola *cola, tDireccion dir, int pasos); /* Encola el movimiento del jugador */
+int juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado); /* Encola el movimiento de cada bandido */
 int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosiciones);
 /* Desencola y procesa los movs, 1 = bien - 0 = mal */
 

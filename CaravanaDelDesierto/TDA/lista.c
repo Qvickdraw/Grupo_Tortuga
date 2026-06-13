@@ -1,5 +1,5 @@
 #include "../Juego/tipos.h"
-
+///LISTA DOBLEMENTE ENLAZADA CIRCULAR
 void listaCrear(tLista *lista)
 {
     *lista = NULL;
@@ -34,13 +34,13 @@ int listaPoner(tLista *lista, const void *dato, unsigned tam)
 {
     tNodoLista *nue = malloc(sizeof(tNodoLista));
     if (!nue)
-        return 0;
+        return SIN_MEM;
 
     nue->info = malloc(tam);
     if (!nue->info)
     {
         free(nue);
-        return 0;
+        return SIN_MEM;
     }
 
     memcpy(nue->info, dato, tam);
@@ -64,12 +64,12 @@ int listaPoner(tLista *lista, const void *dato, unsigned tam)
         *lista = nue;
     }
 
-    return 1;
+    return TODO_OK;
 }
 int listaSacar(tLista *lista, void *dato, unsigned tam)
 {
     if (!*lista)
-        return 0;
+        return LISTA_VACIA;
 
     tNodoLista *elim    = (*lista)->sig;
 
@@ -88,22 +88,9 @@ int listaSacar(tLista *lista, void *dato, unsigned tam)
     free(elim->info);
     free(elim);
 
-    return 1;
+    return TODO_OK;
 }
-tNodoLista *listaSiguiente(tNodoLista *nodo)
-{
-    if (!nodo)
-        return NULL;
 
-    return nodo->sig;
-}
-tNodoLista *listaAnterior(tNodoLista *nodo)
-{
-    if (!nodo)
-        return NULL;
-
-    return nodo->ant;
-}
 ///LISTA SIMPLE
 
 void crearLista(Lista* p)
