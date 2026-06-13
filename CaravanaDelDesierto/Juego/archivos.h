@@ -6,11 +6,11 @@
 #include "tipos.h"
 
 /// NOMBRES DE ARCHIVOS
-#define ARCHIVO_CONFIG "config.txt"
-#define ARCHIVO_CARAVANA "caravana.txt"
-#define ARCHIVO_JUGADORES "jugadores.dat"
-#define ARCHIVO_PARTIDAS "partidas.dat"
-#define ARCHIVO_INDICE "indice.dat"
+#define ARCHIVO_CONFIG "Archivos/config.txt"
+#define ARCHIVO_CARAVANA "Archivos/caravana.txt"
+#define ARCHIVO_JUGADORES "Archivos/jugadores.dat"
+#define ARCHIVO_PARTIDAS "Archivos/partidas.dat"
+#define ARCHIVO_INDICE "Archivos/indice.dat"
 
 
 /// CONFIG

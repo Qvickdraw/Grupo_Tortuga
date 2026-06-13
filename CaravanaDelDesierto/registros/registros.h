@@ -6,12 +6,9 @@
 #include <ctype.h>
 #include "../Juego/tipos.h"
 
-#define ARCHIVO_JUGADORES "jugadores.dat"
-#define ARCHIVO_PARTIDAS "partidas.dat"
-#define ARCHIVO_INDICE "indice.dat"
-
-
-
+#define ARCHIVO_JUGADORES "Archivos/jugadores.dat"
+#define ARCHIVO_PARTIDAS "Archivos/partidas.dat"
+#define ARCHIVO_INDICE "Archivos/indice.dat"
 
 int levantarIndice(const char *nomArchIndice, tArbol *arbol);
 int guardarIndiceOrdenado(const char *nomArchIndice, tArbol *arbol);

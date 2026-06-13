@@ -91,7 +91,7 @@ typedef struct
     char nombre[MAX_NOMBRE];
     int puntajeTotal;
     int partidasJugadas;
-} tJugador;
+}tJugador;
 
 /// PARTIDA
 typedef struct
@@ -102,11 +102,11 @@ typedef struct
     int gano; /* 1 = llego a la salida, 0 = perdio */
 }tPartida;
 
-////
+/// INDICE
 typedef struct
 {
     char nombre[MAX_NOMBRE]; /* La clave de búsqueda */
     long offset;             /* Posición física en jugadores.dat */
-} tRegIndice;
+}tRegIndice;
 
 #endif // TIPOS_H_INCLUDED

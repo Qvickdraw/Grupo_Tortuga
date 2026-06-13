@@ -406,7 +406,7 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
             while(getchar() != '\n');
 
             dado = juegoLanzarDado();
-            printf("\n¡Sacaste un %d!\n", dado);
+            printf("\nSacaste un %d!\n", dado);
             printf("\nMover hacia adelante(A) o atras(S)? ");
             do
             {

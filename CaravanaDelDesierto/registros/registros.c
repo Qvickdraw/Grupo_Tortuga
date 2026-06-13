@@ -10,7 +10,6 @@ int cmpIndiceJugador(const void *a, const void *b)
     return strcmp(ia->nombre, ib->nombre);
 }
 
-
 void accionGuardarIndice(void *info, void *param)
 {
     FILE *fp = (FILE*)param;
@@ -29,7 +28,6 @@ int guardarIndiceOrdenado(const char *nomArchIndice, tArbol *arbol)
     fclose(fp);
     return TODO_OK;
 }
-
 
 int _cargarIndiceBalanceado(tArbol *arbol, FILE *fp, int li, int ls)
 {

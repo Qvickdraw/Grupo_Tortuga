@@ -1,67 +1,72 @@
 # depslib dependency file v1.0
-1781063667 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.c
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.c
 	"archivos.h"
 
-1781063667 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.h
+1781371416 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\archivos.h
 	<stdio.h>
 	<string.h>
 	"tipos.h"
 
-1781038551 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tipos.h
+1781371206 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tipos.h
 	"../TDA/lista.h"
+	"../TDA/cola.h"
+	"../TDA/arbol.h"
 
-1780718533 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.h
+1781370885 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.h
 	<stdlib.h>
 	<string.h>
 
-1781065110 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\main.c
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\main.c
+	<stdio.h>
+	<stdlib.h>
+	"TDA/arbol.h"
 	"Juego/tipos.h"
 	"Juego/archivos.h"
 	"Juego/tablero.h"
 	"Juego/juego.h"
+	"Juego/ranking.h"
+	"registros/registros.h"
 
-1780718397 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.c
-	"arbol.h"
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.c
+	"../Juego/tipos.h"
 
-1780718413 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.h
+1781145730 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\arbol.h
 	<stdlib.h>
 	<string.h>
 
-1780718230 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\cola.c
-	"cola.h"
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\cola.c
+	"../Juego/tipos.h"
 
 1780718533 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\cola.h
 	<stdlib.h>
 	<string.h>
 
-1780718533 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.c
-	"lista.h"
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\tda\lista.c
+	"../Juego/tipos.h"
 
-1781062592 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.c
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.c
 	"tablero.h"
 
-1781042370 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.h
+1781370885 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\tablero.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
-	"tipos.h"
 	"archivos.h"
-	"../TDA/lista.h"
 
-1781065110 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.c
+1781371206 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.c
 	"juego.h"
+	"../registros/registros.h"
 
-1781037113 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\ranking.c
+1781370885 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\ranking.c
+	"ranking.h"
 
-1781061613 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.h
+1781370885 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\juego.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-	"tipos.h"
+	<ctype.h>
 	"tablero.h"
 	"archivos.h"
-	"../TDA/lista.h"
-	"../TDA/cola.h"
 
 1781132542 source:c:\users\zacar\desktop\algoritmos\grupo_tortuga-main\caravanadeldesierto\juego\archivos.c
 	"archivos.h"
@@ -226,4 +231,20 @@
 	<stdlib.h>
 	<time.h>
 	"archivos.h"
+
+1781371460 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\registros\registros.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"../Juego/tipos.h"
+
+1781370885 d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\juego\ranking.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"archivos.h"
+
+1781371206 source:d:\studies\(3640) algoritmos y estructuras de datos\grupo_tortuga\caravanadeldesierto\registros\registros.c
+	"registros.h"
 
