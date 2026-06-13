@@ -93,7 +93,7 @@ int juegoEncolarMovBandidos(tCola *cola, tEstadoJuego *estado)
         mov.idBandido = i;
         mov.pasos = juegoLanzarDado();
 
-        mov.direccion=calcularCaminoMasCorto(estado->nodosBandidos[i], estado->nodoJugador);
+        mov.direccion=calcularCaminoMasCorto(*(estado->nodosBandidos+i), estado->nodoJugador);
 
         codError=colaPoner(cola, &mov, sizeof(tMovimiento));
         if(codError!=TODO_OK)
@@ -201,7 +201,7 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
             printf("\nEl oasis te protegio de la tormenta!\n");
         else
         {
-            printf("\n¡¡¡TURNO PERDIDO POR TORMENTA!!!\n");
+            printf("\nÂ¡Â¡Â¡TURNO PERDIDO POR TORMENTA!!!\n");
             printf("\n--- Los bandidos aprovecharon la tormenta y se movieron ---\n");
             estado->pierdeTurno = 1;
         }
@@ -246,7 +246,7 @@ int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones)
     if (celdaJugador->cantBandidos == 0)
         return 0;
 
-    printf("\n¡Un bandido te intercepto! Perdes una vida.\n");
+    printf("\nÂ¡Un bandido te intercepto! Perdes una vida.\n");
     celdaJugador->tieneJugador = 0;
 
     for (i = 0; i < estado->cantBandidosVivos && !bandidoBorrado; i++)
@@ -306,7 +306,6 @@ int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosicion
 
 
     system("cls");
-    printf("=== MOVIMIENTOS DEL TURNO ===\n");
 
     while (!colaEstaVacia(cola))
     {
@@ -314,13 +313,11 @@ int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosicion
 
         if (!mov.esBandido)
         {
-            printf("Jugador:%s%d\n", mov.direccion == MOV_ADELANTE ? "F" : "B",mov.pasos);
             llego = juegoMoverJugador(estado, mov.direccion, mov.pasos);
             jugadorSeMovio = 1;
         }
         else
         {
-            printf("Bandido:%s%d\n", mov.direccion == MOV_ADELANTE ? "F" : "B",mov.pasos);
             juegoMoverBandido(estado, mov.direccion, mov.idBandido, mov.pasos);
         }
     }
@@ -409,7 +406,7 @@ int juegoJugar(tConfig *config, const char *nombreJugador, int *puntos)
             while(getchar() != '\n');
 
             dado = juegoLanzarDado();
-            printf("\n¡Sacaste un %d!\n", dado);
+            printf("\nÂ¡Sacaste un %d!\n", dado);
             printf("\nMover hacia adelante(A) o atras(S)? ");
             do
             {
