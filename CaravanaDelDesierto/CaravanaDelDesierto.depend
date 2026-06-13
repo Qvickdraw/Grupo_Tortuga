@@ -150,27 +150,27 @@
 	<string.h>
 	"tipos.h"
 
-1781229179 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tipos.h
+1781308413 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tipos.h
 	"../TDA/lista.h"
 
-1781139645 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\lista.h
+1781309140 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\lista.h
 	<stdlib.h>
 	<string.h>
 
-1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\ranking.c
+1781311790 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\ranking.c
+	"ranking.h"
 
-1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tablero.c
+1781311133 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tablero.c
 	"tablero.h"
 
-1781139645 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tablero.h
+1781308627 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\tablero.h
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
-	"tipos.h"
 	"archivos.h"
 	"../TDA/lista.h"
 
-1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\main.c
+1781311885 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\main.c
 	<stdio.h>
 	<stdlib.h>
 	"TDA/arbol.h"
@@ -178,18 +178,18 @@
 	"Juego/archivos.h"
 	"Juego/tablero.h"
 	"Juego/juego.h"
+	"Juego/ranking.h"
 	"registros/registros.h"
 
 1781139645 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\arbol.h
 	<stdlib.h>
 	<string.h>
 
-1781223938 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\juego.h
+1781308574 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\juego.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<ctype.h>
-	"tipos.h"
 	"tablero.h"
 	"archivos.h"
 	"../TDA/lista.h"
@@ -199,14 +199,14 @@
 	<stdlib.h>
 	<string.h>
 
-1781139645 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\registros\registros.h
+1781306737 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\registros\registros.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"../Juego/tipos.h"
 	"../TDA/arbol.h"
 
-1781228387 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\registros\registros.c
+1781312398 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\registros\registros.c
 	"registros.h"
 
 1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\arbol.c
@@ -215,10 +215,16 @@
 1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\cola.c
 	"cola.h"
 
-1781139645 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\lista.c
-	"lista.h"
+1781309149 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\tda\lista.c
+	"../Juego/tipos.h"
 
-1781229439 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\juego.c
+1781314372 source:c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\juego.c
 	"juego.h"
 	"../registros/registros.h"
+
+1781309321 c:\users\user\desktop\proyecto\nueva carpeta\grupo_tortuga-main\caravanadeldesierto\juego\ranking.h
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"archivos.h"
 

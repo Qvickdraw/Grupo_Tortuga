@@ -6,6 +6,7 @@
 #include "../Juego/tipos.h"
 #include "../TDA/arbol.h"
 #define ARCHIVO_JUGADORES "jugadores.dat"
+#define ARCHIVO_PARTIDAS "partidas.dat"
 #define ARCHIVO_INDICE "indice.dat"
 
 
@@ -22,4 +23,8 @@ int loginJugador(const char *nombreBuscado, tJugador *jugadorActual, long *offse
 /* Funciones de actualizacion de registros */
 int guardarPartidaBD(tPartida *nuevaPartida);
 int actualizarJugador(tJugador *jugadorModificado, long offsetJugador);
+
+void mostrarRegistroJugadores();
+void mostrarRegistroPartidas();
+
 #endif // REGISTROS_H_INCLUDED

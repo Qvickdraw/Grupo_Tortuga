@@ -6,7 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "tipos.h"
+
 #include "tablero.h"
 #include "archivos.h"
 #include "../TDA/lista.h"
@@ -27,7 +27,7 @@ int juegoDesencolarYProcesar(tCola *cola, tEstadoJuego *estado, int cantPosicion
 /// MOVIMIENTOS
 char calcularCaminoMasCorto(tNodoLista* nodoBandido, tNodoLista* nodoJugador);
 int  juegoMoverJugador(tEstadoJuego *estado, tDireccion dir, int pasos); /* Mueve al jug y verifica si salio, 1 = llego a la salida - 0 = no llego */
-void juegoMoverBandido(tEstadoJuego *estado, int indiceBandido, int pasos); /* Mueve un bandido 1 paso acercandose al jugador */
+void juegoMoverBandido(tEstadoJuego *estado,tDireccion direccionOptima, int indiceBandido, int pasos); /* Mueve un bandido 1 paso acercandose al jugador */
 
 /// CONTENIDO DE CELDA
 void juegoAplicarEfecto(tEstadoJuego *estado); /* Aplica el efecto de la celda donde cayo el jugador */

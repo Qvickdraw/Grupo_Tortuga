@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "tipos.h"
+
 #include "archivos.h"
 #include "../TDA/lista.h"
 

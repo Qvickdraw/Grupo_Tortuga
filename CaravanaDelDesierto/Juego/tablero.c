@@ -19,34 +19,34 @@ int tableroGenerar(const tConfig *config)
         return 0;
     }
 
-    /* Inicializamos las celdas */
+    /* Inicializamos las celdas usando aritmética de punteros */
     for (i = 0; i < cantPos; i++)
     {
-        celdas[i].numero = i + 1;
-        celdas[i].estaInicio = 0;
-        celdas[i].estaSalida = 0;
-        celdas[i].tienePremio = 0;
-        celdas[i].tieneVida = 0;
-        celdas[i].tieneOasis = 0;
-        celdas[i].tieneTormenta = 0;
-        celdas[i].cantBandidos = 0;
-        celdas[i].tieneJugador = 0;
+        (celdas + i)->numero = i + 1;
+        (celdas + i)->estaInicio = 0;
+        (celdas + i)->estaSalida = 0;
+        (celdas + i)->tienePremio = 0;
+        (celdas + i)->tieneVida = 0;
+        (celdas + i)->tieneOasis = 0;
+        (celdas + i)->tieneTormenta = 0;
+        (celdas + i)->cantBandidos = 0;
+        (celdas + i)->tieneJugador = 0;
     }
 
     /* Inicio y salida */
-    celdas[0].estaInicio = 1;
-    celdas[0].tieneJugador = 1;
-    celdas[cantPos - 1].estaSalida = 1;
+    celdas->estaInicio = 1;           /* 'celdas' equivale a (celdas + 0) */
+    celdas->tieneJugador = 1;
+    (celdas + cantPos - 1)->estaSalida = 1; /* Último elemento */
 
     /* Premios  */
     for (i = 0; i < config->maximoPremios; i++)
     {
         do
         {
-            pos = 1 + rand() % (cantPos - 2);
-        }while(celdas[pos].tienePremio);
+            pos = rand() % cantPos;
+        } while((celdas + pos)->tienePremio || (celdas + pos)->estaInicio || (celdas + pos)->estaSalida);
 
-        celdas[pos].tienePremio = 1;
+        (celdas + pos)->tienePremio = 1;
     }
 
     /* Vidas extra */
@@ -54,9 +54,10 @@ int tableroGenerar(const tConfig *config)
     {
         do
         {
-            pos = 1 + rand() % (cantPos - 2);
-        }while(celdas[pos].tieneVida);
-        celdas[pos].tieneVida = 1;
+            pos = rand() % cantPos;
+        } while((celdas + pos)->tieneVida || (celdas + pos)->estaInicio || (celdas + pos)->estaSalida);
+
+        (celdas + pos)->tieneVida = 1;
     }
 
     /* Oasis */
@@ -64,10 +65,10 @@ int tableroGenerar(const tConfig *config)
     {
         do
         {
-            pos = 1 + rand() % (cantPos - 2);
-        }while(celdas[pos].tieneOasis);
+            pos = rand() % cantPos;
+        } while((celdas + pos)->tieneOasis || (celdas + pos)->estaInicio || (celdas + pos)->estaSalida);
 
-        celdas[pos].tieneOasis = 1;
+        (celdas + pos)->tieneOasis = 1;
     }
 
     /* Tormentas */
@@ -75,10 +76,10 @@ int tableroGenerar(const tConfig *config)
     {
         do
         {
-            pos = 1 + rand() % (cantPos - 2);
-        }while(celdas[pos].tieneTormenta || pos <= 1);
+            pos = rand() % cantPos;
+        } while((celdas + pos)->tieneTormenta || (celdas + pos)->tieneOasis || (celdas + pos)->estaInicio || (celdas + pos)->estaSalida);
 
-        celdas[pos].tieneTormenta = 1;
+        (celdas + pos)->tieneTormenta = 1;
     }
 
     /* Bandidos */
@@ -86,10 +87,10 @@ int tableroGenerar(const tConfig *config)
     {
         do
         {
-            pos = 1 + rand() % (cantPos - 2); /* Me aseguro que no este en el inicio ni al final */
-        }while(celdas[pos].cantBandidos > 0 && pos <= 2);
+            pos = rand() % cantPos;
+        } while((celdas + pos)->cantBandidos > 0 || (celdas + pos)->estaInicio || (celdas + pos)->estaSalida);
 
-        celdas[pos].cantBandidos++;
+        (celdas + pos)->cantBandidos++;
     }
 
     if (!escribirCaravana(celdas, cantPos)) /* Generamos el caravana.txt */
@@ -97,6 +98,7 @@ int tableroGenerar(const tConfig *config)
         free(celdas);
         return 0;
     }
+
     free(celdas);
 
     return 1;
@@ -168,21 +170,3 @@ void tableroMostrar(tLista *lista, int cantPosiciones)
     printf("=============================\n");
 }
 
-tNodoLista *tableroBuscarSalida(tLista *lista, int cantPosiciones)
-{
-    if (!*lista)
-        return NULL;
-
-    tNodoLista *actual = (*lista)->sig;
-    int i;
-
-    for (i = 0; i < cantPosiciones; i++)
-    {
-        tCelda *celda = (tCelda *)actual->info;
-        if (celda->estaSalida)
-            return actual;
-        actual = actual->sig;
-    }
-
-    return NULL;
-}

@@ -1,7 +1,7 @@
 
 #include "registros.h"
 
-/* Función de comparación adaptada a strings */
+
 int cmpIndiceJugador(const void *a, const void *b)
 {
     const tRegIndice *ia = (const tRegIndice *)a;
@@ -41,9 +41,7 @@ void _cargarIndiceBalanceado(tArbol *arbol, FILE *fp, int li, int ls)
     fseek(fp, m * sizeof(tRegIndice), SEEK_SET);
     fread(&indAux, sizeof(tRegIndice), 1, fp);
 
-
     arbolInsertar(arbol, &indAux, sizeof(tRegIndice), cmpIndiceJugador);
-
 
     _cargarIndiceBalanceado(arbol, fp, li, m - 1);
     _cargarIndiceBalanceado(arbol, fp, m + 1, ls);
@@ -93,28 +91,30 @@ int loginJugador(const char *nombreBuscado, tJugador *jugadorActual, long *offse
 
         printf("\n===================================\n");
         printf("Bienvenido nuevamente, %s!\n", jugadorActual->nombre);
-        printf("Partidas jugadas: %d | Puntaje total: %d\n",
-               jugadorActual->partidasJugadas, jugadorActual->puntajeTotal);
+        printf("Partidas jugadas: %d | Puntaje total: %d\n", jugadorActual->partidasJugadas, jugadorActual->puntajeTotal);
         printf("===================================\n");
         return 1;
     }
     else
     {
-
         strcpy(jugadorActual->nombre, nombreBuscado);
         jugadorActual->puntajeTotal = 0;
         jugadorActual->partidasJugadas = 0;
 
-
-        fpJugadores = fopen(ARCHIVO_JUGADORES, "ab");
+        fpJugadores = fopen(ARCHIVO_JUGADORES, "r+b");
         if (!fpJugadores)
-            return 0;
+        {
+            fpJugadores = fopen(ARCHIVO_JUGADORES, "w+b");
+            if (!fpJugadores)
+                return 0;
+        }
 
+        fseek(fpJugadores, 0, SEEK_END);
 
         *offsetActual = ftell(fpJugadores);
+
         fwrite(jugadorActual, sizeof(tJugador), 1, fpJugadores);
         fclose(fpJugadores);
-
 
         regEncontrado.offset = *offsetActual;
         strcpy(regEncontrado.nombre, nombreBuscado);
@@ -147,11 +147,68 @@ int actualizarJugador(tJugador *jugadorModificado, long offsetJugador)
 int guardarPartidaBD(tPartida *nuevaPartida)
 {
 
-    FILE *fp = fopen("partidas.dat", "ab");
+    FILE *fp = fopen(ARCHIVO_PARTIDAS, "ab");
     if (!fp) return 0;
 
     fwrite(nuevaPartida, sizeof(tPartida), 1, fp);
 
     fclose(fp);
     return 1;
+}
+void mostrarRegistroJugadores()
+{
+    FILE *fp = fopen(ARCHIVO_JUGADORES, "rb");
+    tJugador jugador;
+
+    if (!fp)
+    {
+        printf("\nNo se pudo abrir el archivo de jugadores o no hay registros previos.\n");
+        return;
+    }
+
+    printf("\n================ REGISTRO DE JUGADORES ================\n");
+    printf("%-20s | %-15s | %-15s\n", "NOMBRE", "PARTIDAS JUGADAS", "PUNTAJE TOTAL");
+    printf("-------------------------------------------------------\n");
+
+
+    while (fread(&jugador, sizeof(tJugador), 1, fp) == 1)
+    {
+        printf("%-20s | %-15d | %-15d\n",
+               jugador.nombre,
+               jugador.partidasJugadas,
+               jugador.puntajeTotal);
+    }
+
+    printf("=======================================================\n");
+    fclose(fp);
+}
+
+
+void mostrarRegistroPartidas()
+{
+    FILE *fp = fopen(ARCHIVO_PARTIDAS, "rb");
+    tPartida partida;
+
+    if (!fp)
+    {
+        printf("\nNo se pudo abrir el archivo de partidas o no hay partidas jugadas.\n");
+        return;
+    }
+
+    printf("\n================== HISTORIAL DE PARTIDAS ==================\n");
+    printf("%-20s | %-10s | %-12s | %-10s\n", "JUGADOR", "PUNTOS", "MOVIMIENTOS", "RESULTADO");
+    printf("-----------------------------------------------------------\n");
+
+    /* Leemos registro por registro hasta el fin del archivo */
+    while (fread(&partida, sizeof(tPartida), 1, fp) == 1)
+    {
+        printf("%-20s | %-10d | %-12d | %-10s\n",
+               partida.nombreJugador,
+               partida.puntos,
+               partida.cantMovimientos,
+               partida.gano ? "Victoria" : "Derrota");
+    }
+
+    printf("===========================================================\n");
+    fclose(fp);
 }

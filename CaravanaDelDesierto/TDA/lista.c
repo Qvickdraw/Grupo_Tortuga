@@ -1,4 +1,4 @@
-#include "lista.h"
+#include "../Juego/tipos.h"
 
 void listaCrear(tLista *lista)
 {
@@ -104,3 +104,70 @@ tNodoLista *listaAnterior(tNodoLista *nodo)
 
     return nodo->ant;
 }
+///LISTA SIMPLE
+
+void crearLista(Lista* p)
+{
+    *p = NULL;
+}
+int vaciarLista(Lista* p)
+{
+    int cant = 0;
+    while(*p)
+    {
+        sNodoSimple* aux = *p;
+
+        cant++;
+        *p = aux->sig;
+        free(aux->info);
+        free(aux);
+    }
+    return cant;
+}
+int vaciarListaYMostrar(Lista* p, MOSTRAR MostrarLista)
+{
+    int cant = 0;
+    while(*p)
+    {
+        sNodoSimple* aux = *p;
+
+        cant++;
+        *p = aux->sig;
+
+        if(MostrarLista)
+            MostrarLista(aux->info, cant);
+
+        free(aux->info);
+        free(aux);
+    }
+    return cant;
+}
+int ponerEnOrden(Lista* lista, const void* d, unsigned cantBytes, CMP_LISTA cmpLista, ACC_LISTA accLista)
+{
+    sNodoSimple* nuevo;
+
+    while(*lista && cmpLista((*lista)->info, d) < 0)
+        lista = &(*lista)->sig;
+
+    if(*lista && cmpLista((*lista)->info, d) == 0)
+    {
+        if(accLista)
+            if(!accLista(&(*lista)->info, &(*lista)->tamInfo, d, cantBytes))
+                return SIN_MEM;
+        return CLA_DUP;
+    }
+
+    if((nuevo = malloc(sizeof(sNodoSimple))) == NULL || (nuevo->info = malloc(cantBytes)) == NULL)
+    {
+        free(nuevo);
+        return SIN_MEM;
+    }
+
+    memcpy(nuevo->info, d, cantBytes);
+    nuevo->tamInfo = cantBytes;
+    nuevo->sig = *lista;
+    *lista = nuevo;
+
+    return TODO_OK;
+}
+

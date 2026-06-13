@@ -3,6 +3,13 @@
 
 #include "../TDA/lista.h"
 
+/// CODIGOS DE ERROR
+#define TODO_OK 1
+#define ERR_ARCH 2
+#define SIN_MEM 3
+#define CLA_DUP 4
+
+
 /// CONSTANTES
 #define MAX_NOMBRE      50
 #define MAX_HISTORIAL   500
@@ -76,9 +83,9 @@ typedef struct
 typedef struct
 {
     char nombre[MAX_NOMBRE];
-    int puntosTotal; /* acu de todas las partidas */
-    int partidasJugadas; /* cant de partidas */
-}tJugadorRegistrado;
+    int puntajeTotal;
+    int partidasJugadas;
+} tJugador;
 
 /// PARTIDA
 typedef struct
@@ -88,14 +95,6 @@ typedef struct
     int cantMovimientos;
     int gano; /* 1 = llego a la salida, 0 = perdio */
 }tPartida;
-
-
-typedef struct
-{
-    char nombre[MAX_NOMBRE];
-    int puntajeTotal;
-    int partidasJugadas;
-} tJugador;
 
 ////
 typedef struct

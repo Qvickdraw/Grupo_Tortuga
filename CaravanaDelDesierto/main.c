@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "TDA/arbol.h"
 #include "Juego/tipos.h"
 #include "Juego/archivos.h"
 #include "Juego/tablero.h"
 #include "Juego/juego.h"
+#include "Juego/ranking.h"
 #include "registros/registros.h"
 
 
@@ -16,7 +18,7 @@ int main()
     tJugador jugadorActual;
     long offsetJugador;
     char nombreIngresado[MAX_NOMBRE];
-    int opcionMenu = 0;
+    int opcionMenu = 0,codError;
     int puntosObtenidos;
 
     /* 1. INICIALIZAR EL SISTEMA DE DATOS */
@@ -49,52 +51,86 @@ int main()
 
     esperarEnter();
 
-    /* 4. BUCLE DEL MENÚ PRINCIPAL */
-    while (opcionMenu != 3)
+
+    while (opcionMenu != 5)
     {
-        system("cls");
-        printf("===================================\n");
-        printf("          MENU PRINCIPAL           \n");
-        printf("===================================\n");
-        /* Mostramos las stats en vivo en el menú */
-        printf("Jugador activo: %s | Partidas: %d | Puntos Totales: %d\n",
-               jugadorActual.nombre, jugadorActual.partidasJugadas, jugadorActual.puntajeTotal);
-        printf("-----------------------------------\n");
-        printf("1. Jugar nueva partida\n");
-        printf("2. Ver Ranking de posiciones\n");
-        printf("3. Salir del juego\n");
-        printf("Seleccione una opcion: ");
-
-        scanf("%d", &opcionMenu);
-        while(getchar() != '\n');
-
-        if (opcionMenu == 1)
+        do
         {
-            /* Jugamos la partida pasándole el nombre real del jugador logueado */
+            system("cls");
+            printf("===================================\n");
+            printf("          MENU PRINCIPAL           \n");
+            printf("===================================\n");
+
+            printf("Jugador activo: %s | Partidas: %d | Puntos Totales: %d\n",
+                   jugadorActual.nombre, jugadorActual.partidasJugadas, jugadorActual.puntajeTotal);
+            printf("-----------------------------------\n");
+            printf("1. Jugar nueva partida\n");
+            printf("2. Ver Registro de jugadores\n");
+            printf("3. Ver Registro de partidas\n");
+            printf("4. Ver Ranking de jugadores\n");
+            printf("5. Salir del juego\n");
+            printf("Seleccione una opcion: ");
+
+            scanf("%d", &opcionMenu);
+            while(getchar() != '\n');
+            if(opcionMenu>5 || opcionMenu<0)
+            {
+                printf("\nOpcion invalida\n");
+                esperarEnter();
+            }
+
+        }while(opcionMenu>5 || opcionMenu<0);
+
+
+        switch (opcionMenu)
+        {
+        case 1:
             juegoJugar(&config, jugadorActual.nombre, &puntosObtenidos);
 
-            /* Actualizamos las estadísticas en RAM al terminar */
             jugadorActual.partidasJugadas++;
             jugadorActual.puntajeTotal += puntosObtenidos;
 
-            /* GUARDAMOS EN DISCO: Pisamos su registro con los nuevos datos */
             actualizarJugador(&jugadorActual, offsetJugador);
 
             esperarEnter();
-        }
-        else if (opcionMenu == 2)
-        {
+            break;
+        case 2:
+            system("cls");
+            printf("\n--- REGISTRO DE JUGADORES ---\n");
+
+            mostrarRegistroJugadores();
+
+            esperarEnter();
+            break;
+        case 3:
+            system("cls");
+            printf("\n--- REGISTRO DE PARTIDAS ---\n");
+
+            mostrarRegistroPartidas();
+
+            esperarEnter();
+            break;
+        case 4:
             system("cls");
             printf("\n--- RANKING DE JUGADORES ---\n");
-            printf("(Proximamente...)\n");
+
+            codError=mostrarRankingJugadores();
+            if(codError!=TODO_OK)
+                return codError;
+
             esperarEnter();
+            break;
         }
+
     }
 
-    /* 5. CIERRE DEL JUEGO: Guardamos el índice ordenado y liberamos memoria */
+
     guardarIndiceOrdenado(ARCHIVO_INDICE, &indiceJugadores);
     arbolVaciar(&indiceJugadores);
-
+    system("cls");
+    printf("===================================\n");
+    printf("      CARAVANA DEL DESIERTO        \n");
+    printf("===================================\n");
     printf("\n¡Gracias por jugar! Caravana del desierto cerrada correctamente.\n");
     return 0;
 }
