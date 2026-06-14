@@ -58,7 +58,7 @@ typedef struct
     int pierdeTurno; /* 1 = pierde el proximo turno */
 }tEstadoJuego;
 
-/// MOVIMIENTO ----REMOVER COMPLETAMENTE ----- REEMPLAZAR CON CHAR
+/// MOVIMIENTO 
 typedef enum
 {
     MOV_ADELANTE, /* 0 */
@@ -105,8 +105,8 @@ typedef struct
 /// INDICE
 typedef struct
 {
-    char nombre[MAX_NOMBRE]; /* La clave de búsqueda */
-    long offset;             /* Posición física en jugadores.dat */
+    char nombre[MAX_NOMBRE]; /* La clave de bÃºsqueda */
+    long offset;             /* PosiciÃ³n fÃ­sica en jugadores.dat */
 }tRegIndice;
 
 #endif // TIPOS_H_INCLUDED
