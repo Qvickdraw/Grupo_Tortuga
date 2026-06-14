@@ -74,13 +74,15 @@ maximo_tormentas:3
 
 ## Cómo jugar
 
-1. Compilar el proyecto (ver sección Compilación)
+1. Compilar el proyecto
 2. Ejecutar el `.exe` generado
 3. Ingresar el nombre de jugador (si ya jugó antes, se cargan sus estadísticas)
 4. Desde el menú principal:
    - **1.** Jugar una nueva partida
-   - **2.** Ver el ranking de jugadores
-   - **3.** Salir
+   - **2.** Ver el registro de jugadores
+   - **3.** Ver el registro de partidas
+   - **4.** Ver el ranking de jugadores
+   - **5.** Salir
 
 ### Durante la partida
 
