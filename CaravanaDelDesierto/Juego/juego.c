@@ -201,7 +201,7 @@ void juegoAplicarEfecto(tEstadoJuego *estado)
             printf("\nEl oasis te protegio de la tormenta!\n");
         else
         {
-            printf("\n¡¡¡TURNO PERDIDO POR TORMENTA!!!\n");
+            printf("\nTURNO PERDIDO POR TORMENTA!!!\n");
             printf("\n--- Los bandidos aprovecharon la tormenta y se movieron ---\n");
             estado->pierdeTurno = 1;
         }
@@ -246,7 +246,7 @@ int juegoVerificarColision(tEstadoJuego *estado, int cantPosiciones)
     if (celdaJugador->cantBandidos == 0)
         return 0;
 
-    printf("\n¡Un bandido te intercepto! Perdes una vida.\n");
+    printf("\nUn bandido te intercepto! Perdes una vida.\n");
     celdaJugador->tieneJugador = 0;
 
     for (i = 0; i < estado->cantBandidosVivos && !bandidoBorrado; i++)
