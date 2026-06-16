@@ -15,7 +15,7 @@ y Tormentas de arena (T).
 
 | Apellido y Nombre | DNI |
 |---|---|
-| Luna Gauna, Gonzalo Thiago | 45738676 |
+| Luna Gauna, Thiago Gonzalo | 45738676 |
 | Mascasin Muñoz, Maximiano | 41150839 |
 | Zacarias, Franco Hernan | 46422064 |
 
